@@ -1,16 +1,21 @@
-# todo
 
-A new Flutter project.
 
-## Getting Started
+Приложение для отслеживания важих задач
+Ссылка на билд https://disk.yandex.ru/d/IRZbcA33etA03w
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Два экрана:
+1. со списком задач:
+  - можно свайпать задачи для удаления или пометки выполнено
+  - отмечать галочкой выполнение
+  - возможность скрыть завершенные
+  - отображение количесва завершенных задач
+  - по клику на задачу, переход на экран редактирования
+  - по клику на кнопку снизу, переход на экран добавления
+  - анимированая шапка
+![img.png](img.png)
+2. экран с изменением/добавлением задачи
+  - редактирование различных пунктов задачи(Имя, Приоритет, Срок выполнения)
+  - нельзя добавить или изменить на пустое имя задачи
+  - нельзя удалить, если задача добавляется(кнопка становится не активной)
+  - можно сохранить или вернуться на предыдущий экран
+![img_1.png](img_1.png)
