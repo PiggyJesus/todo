@@ -64,14 +64,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets\icons\visibility.svg
-    - assets\icons\delete.svg
-    - assets\icons\check.svg
-    - assets\icons\info_outline.svg
-    - assets\icons\add.svg
-    - assets\icons\visibility_off.svg
-    - assets\icons\double_excl.svg
-    - assets\icons\down_arrow.svg
+    - assets\icons\
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

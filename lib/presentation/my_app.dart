@@ -5,7 +5,7 @@ import 'package:todo/presentation/utils/importance.dart';
 import 'package:todo/presentation/utils/my_colors.dart';
 import 'package:todo/presentation/utils/task_model.dart';
 
-import 'tasks_page/tasks_page.dart';
+import 'pages/tasks_page/tasks_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
