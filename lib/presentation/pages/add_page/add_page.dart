@@ -120,7 +120,7 @@ class _AddPageState extends State<AddPage> {
             ),
             DropdownButton<Importance>(
               elevation: 16,
-              underline: SizedBox(),
+              underline: const SizedBox(),
               value: task.importance,
               items: List.from([
                 DropdownMenuItem(

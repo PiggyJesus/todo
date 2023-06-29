@@ -115,12 +115,12 @@ class _MainPartState extends State<MainPart> {
             ),
             if (!task.isDone && task.importance == Importance.high)
               SvgPicture.asset(
-                MyIcons.double_excl,
+                MyIcons.doubleExcl,
                 color: MyColors.red,
               ),
             if (!task.isDone && task.importance == Importance.low)
               SvgPicture.asset(
-                MyIcons.down_arrow,
+                MyIcons.downArrow,
                 color: MyColors.grey,
               ),
           ],

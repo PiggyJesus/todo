@@ -35,11 +35,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primarySwatch: Colors.blue,
             backgroundColor: MyColors.primary,
-            textTheme: TextTheme(),
-            appBarTheme: AppBarTheme(
+            appBarTheme: const AppBarTheme(
               backgroundColor: MyColors.primary,
             )),
-        home: TasksPage(),
+        home: const TasksPage(),
         debugShowCheckedModeBanner: false,
       ),
     );
