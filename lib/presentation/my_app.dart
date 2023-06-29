@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
-import 'package:todo/domain/models/importance.dart';
 import 'package:todo/presentation/utils/my_colors.dart';
-import 'package:todo/domain/models/task_model.dart';
 
 import 'pages/tasks_page/tasks_page.dart';
 
