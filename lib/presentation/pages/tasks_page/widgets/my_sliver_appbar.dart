@@ -5,6 +5,7 @@ import 'package:todo/presentation/bloc/tasks_bloc.dart';
 import 'package:todo/presentation/utils/my_colors.dart';
 import 'package:todo/presentation/utils/my_icons.dart';
 import 'package:todo/presentation/utils/my_text_styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {
   final BuildContext context;
@@ -41,7 +42,7 @@ class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {
               bottom: 16 + 28 * animationFactor,
               left: 16 + 44 * animationFactor,
               child: Text(
-                'Мои дела',
+                AppLocalizations.of(context)!.myTasks,
                 style: MyTextStyles.lagreTitle
                     .copyWith(fontSize: 20 + 12 * animationFactor),
               ),
@@ -50,7 +51,7 @@ class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {
               bottom: 16 + 2 * animationFactor,
               left: 60 + 120 * (1 - animationFactor),
               child: Text(
-                'Выполнено — ${tasksBloc.doneCount}',
+                '${AppLocalizations.of(context)!.done} — ${tasksBloc.doneCount}',
                 style: MyTextStyles.body.copyWith(
                   color:
                       MyColors.labelTertiary.withOpacity(0.3 * animationFactor),
