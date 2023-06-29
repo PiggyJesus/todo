@@ -6,11 +6,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:todo/presentation/pages/add_page/add_page.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
-import 'package:todo/presentation/utils/importance.dart';
+import 'package:todo/domain/models/importance.dart';
 import 'package:todo/presentation/utils/my_colors.dart';
 import 'package:todo/presentation/utils/my_icons.dart';
 import 'package:todo/presentation/utils/my_text_styles.dart';
-import 'package:todo/presentation/utils/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 
 class TaskWidget extends StatefulWidget {
   final int id;

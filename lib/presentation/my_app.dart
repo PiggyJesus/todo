@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
-import 'package:todo/presentation/utils/importance.dart';
+import 'package:todo/domain/models/importance.dart';
 import 'package:todo/presentation/utils/my_colors.dart';
-import 'package:todo/presentation/utils/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 
 import 'pages/tasks_page/tasks_page.dart';
 
@@ -15,19 +15,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => TasksBloc()
-        ..add(TaskInsertEvent(TaskModel(
-          name:
-              "t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t ",
-          importance: Importance.high,
-        )))
-        ..add(TaskInsertEvent(TaskModel(
-          name: "task2",
-          importance: Importance.low,
-        )))
-        ..add(TaskInsertEvent(TaskModel(
-          name: "task3",
-          importance: Importance.common,
-        ))),
+        // ..add(TaskInsertEvent(TaskModel(
+        //   uuid: '1',
+        //   name:
+        //       "t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t t ",
+        //   importance: Importance.high,
+        // )))
+        // ..add(TaskInsertEvent(TaskModel(
+        //   uuid: '2',
+        //   name: "task2",
+        //   importance: Importance.low,
+        // )))
+        // ..add(TaskInsertEvent(TaskModel(
+        //   uuid: '3',
+        //   name: "task3",
+        //   importance: Importance.common,
+        // )))
+        ,
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(

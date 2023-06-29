@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
-import 'package:todo/presentation/utils/importance.dart';
+import 'package:todo/domain/models/importance.dart';
 import 'package:todo/presentation/utils/my_colors.dart';
 import 'package:todo/presentation/utils/my_icons.dart';
 import 'package:todo/presentation/utils/my_text_styles.dart';
-import 'package:todo/presentation/utils/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class AddPage extends StatefulWidget {
   final int taskId;
@@ -31,7 +32,8 @@ class _AddPageState extends State<AddPage> {
     taskId = widget.taskId;
     newTask = taskId == -1;
     if (newTask) {
-      task = TaskModel(name: "", importance: Importance.common);
+      String uuid = const Uuid().v1();
+      task = TaskModel(uuid: uuid, name: "", importance: Importance.common);
     } else {
       task = BlocProvider.of<TasksBloc>(context).data[widget.taskId].copyWith();
     }
@@ -99,11 +101,9 @@ class _AddPageState extends State<AddPage> {
                   hintText: "Что надо сделать…",
                   hintStyle: MyTextStyles.body
                       .copyWith(color: MyColors.labelTertiary.withOpacity(0.3)),
-
                   contentPadding: const EdgeInsets.all(16),
                   border: InputBorder.none,
                 ),
-
                 validator: (value) {
                   return (value == null || value.isEmpty)
                       ? "Введите название"
@@ -127,8 +127,8 @@ class _AddPageState extends State<AddPage> {
                   value: Importance.common,
                   child: Text(
                     "Нет",
-                    style: MyTextStyles.body
-                    .copyWith(color: MyColors.labelTertiary.withOpacity(0.3)),
+                    style: MyTextStyles.body.copyWith(
+                        color: MyColors.labelTertiary.withOpacity(0.3)),
                   ),
                 ),
                 DropdownMenuItem(
