@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
-import 'package:todo/presentation/utils/importance.dart';
+import 'package:todo/domain/models/importance.dart';
 import 'package:todo/presentation/utils/my_colors.dart';
 import 'package:todo/presentation/utils/my_icons.dart';
 import 'package:todo/presentation/utils/my_text_styles.dart';
-import 'package:todo/presentation/utils/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class AddPage extends StatefulWidget {
   final int taskId;
@@ -31,7 +33,8 @@ class _AddPageState extends State<AddPage> {
     taskId = widget.taskId;
     newTask = taskId == -1;
     if (newTask) {
-      task = TaskModel(name: "", importance: Importance.common);
+      String uuid = const Uuid().v1();
+      task = TaskModel(uuid: uuid, name: "", importance: Importance.common);
     } else {
       task = BlocProvider.of<TasksBloc>(context).data[widget.taskId].copyWith();
     }
@@ -69,7 +72,7 @@ class _AddPageState extends State<AddPage> {
                 }
               },
               child: Text(
-                "СОХРАНИТЬ",
+                AppLocalizations.of(context)!.save,
                 style: MyTextStyles.button.copyWith(color: MyColors.blue),
               ),
             ),
@@ -96,17 +99,15 @@ class _AddPageState extends State<AddPage> {
                 controller: _textController,
                 maxLines: null,
                 decoration: InputDecoration(
-                  hintText: "Что надо сделать…",
+                  hintText: AppLocalizations.of(context)!.textExample,
                   hintStyle: MyTextStyles.body
                       .copyWith(color: MyColors.labelTertiary.withOpacity(0.3)),
-
                   contentPadding: const EdgeInsets.all(16),
                   border: InputBorder.none,
                 ),
-
                 validator: (value) {
                   return (value == null || value.isEmpty)
-                      ? "Введите название"
+                      ? AppLocalizations.of(context)!.textErrorMessage
                       : null;
                 },
               ),
@@ -114,34 +115,34 @@ class _AddPageState extends State<AddPage> {
             Padding(
               padding: const EdgeInsets.only(left: 16),
               child: Text(
-                "Важность",
+                AppLocalizations.of(context)!.priority,
                 style: MyTextStyles.body,
               ),
             ),
             DropdownButton<Importance>(
               elevation: 16,
-              underline: SizedBox(),
+              underline: const SizedBox(),
               value: task.importance,
               items: List.from([
                 DropdownMenuItem(
                   value: Importance.common,
                   child: Text(
-                    "Нет",
-                    style: MyTextStyles.body
-                    .copyWith(color: MyColors.labelTertiary.withOpacity(0.3)),
+                    AppLocalizations.of(context)!.withoutPriority,
+                    style: MyTextStyles.body.copyWith(
+                        color: MyColors.labelTertiary.withOpacity(0.3)),
                   ),
                 ),
                 DropdownMenuItem(
                   value: Importance.low,
                   child: Text(
-                    "Низкий",
+                    AppLocalizations.of(context)!.lowPriority,
                     style: MyTextStyles.body,
                   ),
                 ),
                 DropdownMenuItem(
                   value: Importance.high,
                   child: Text(
-                    "!! Высокий",
+                    "!! ${AppLocalizations.of(context)!.highPriority}",
                     style: MyTextStyles.body.copyWith(color: MyColors.red),
                   ),
                 ),
@@ -153,7 +154,7 @@ class _AddPageState extends State<AddPage> {
               },
               iconSize: 0,
               hint: Text(
-                "Нет",
+                AppLocalizations.of(context)!.doUntil,
                 style: MyTextStyles.body.copyWith(
                   color: MyTextStyles.body.color!.withOpacity(0.3),
                 ),
@@ -172,7 +173,7 @@ class _AddPageState extends State<AddPage> {
                   Column(
                     children: [
                       Text(
-                        "Сделать до",
+                        AppLocalizations.of(context)!.doUntil,
                         style: MyTextStyles.body,
                       ),
                       if (task.doUntil != null)
@@ -238,7 +239,7 @@ class _AddPageState extends State<AddPage> {
                       ),
                       const SizedBox(width: 15),
                       Text(
-                        "Удалить",
+                        AppLocalizations.of(context)!.delete,
                         style: MyTextStyles.body.copyWith(
                           color: newTask ? MyColors.labelDisable : MyColors.red,
                         ),

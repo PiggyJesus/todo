@@ -2,6 +2,10 @@ part of 'tasks_bloc.dart';
 
 class TasksEvent {}
 
+class TaskLoadEvent extends TasksEvent {
+  TaskLoadEvent();
+}
+
 class TaskInsertEvent extends TasksEvent {
   TaskModel task;
 

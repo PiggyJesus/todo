@@ -1,0 +1,17 @@
+{
+    "helloWorld": "Hello World!",
+    "myTasks": "My tasks",
+    "done": "Done",
+    "save": "Save", 
+    "delete": "Delete",
+    "lowPriority": "Low",
+    "highPriority": "High",
+    "withoutPriority": "None",
+    "priority": "Priority",
+    "doUntil": "Do until",
+    "textExample": "Todo something...",
+    "deleted": "Deleted",
+    "cancel": "Cancel",
+    "newTask": "New",
+    "textErrorMessage": "Insert name"
+}
