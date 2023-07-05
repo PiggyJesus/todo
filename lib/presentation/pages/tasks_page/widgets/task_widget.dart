@@ -14,8 +14,13 @@ import 'package:todo/domain/models/task_model.dart';
 
 class TaskWidget extends StatefulWidget {
   final int id;
+  final void Function(int selectedTaskId) onTapEditTask;
 
-  const TaskWidget(this.id, {super.key});
+  const TaskWidget({
+    required this.id,
+    required this.onTapEditTask,
+    super.key,
+  });
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
@@ -37,7 +42,11 @@ class _TaskWidgetState extends State<TaskWidget> {
       key: ValueKey(tasksBloc.data[widget.id]),
       background: LeftShift(offset),
       secondaryBackground: RightShift(offset),
-      child: MainPart(tasksBloc.data[widget.id].copyWith(), widget.id),
+      child: MainPart(
+        task: tasksBloc.data[widget.id].copyWith(),
+        id: widget.id,
+        onTapEditTask: widget.onTapEditTask,
+      ),
       onUpdate: (details) {
         setState(() {
           offset = details.progress;
@@ -61,9 +70,15 @@ class _TaskWidgetState extends State<TaskWidget> {
 }
 
 class MainPart extends StatefulWidget {
+  final void Function(int selectedTaskId) onTapEditTask;
   final TaskModel task;
   final int id;
-  const MainPart(this.task, this.id, {super.key});
+  const MainPart({
+    required this.task,
+    required this.id,
+    required this.onTapEditTask,
+    super.key,
+  });
 
   @override
   State<MainPart> createState() => _MainPartState();
