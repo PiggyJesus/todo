@@ -13,5 +13,6 @@
     "deleted": "Удалено",
     "cancel": "Отмена",
     "newTask": "Новое",
-    "textErrorMessage": "Введите название"
+    "textErrorMessage": "Введите название",
+    "unknownPage": "Неизвестная страница!"
 }

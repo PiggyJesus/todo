@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:todo/presentation/navigation/navigation_state.dart';
 import 'package:todo/presentation/pages/add_page/add_page.dart';
 import 'package:todo/presentation/pages/tasks_page/tasks_page.dart';
+import 'package:todo/presentation/pages/unknown_page/unknown_page.dart';
 
 class MyRouterDelegate extends RouterDelegate<NavigationState>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<NavigationState> {
@@ -32,8 +33,8 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
           MaterialPage(
             child: AddPage(state!.selectedTaskId!),
           ),
-        // if (state?.isUnknown ?? false)
-        //   MaterialPage(child: UnknownPage()),
+        if (state?.isUnknown ?? false)
+          const MaterialPage(child: UnknownPage()),
       ],
       onPopPage: (route, result) {
         if (!route.didPop(result)) {

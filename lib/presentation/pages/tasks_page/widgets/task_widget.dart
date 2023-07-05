@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:todo/presentation/pages/add_page/add_page.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
 import 'package:todo/domain/models/importance.dart';
 import 'package:todo/core/utils/my_colors.dart';
@@ -93,11 +92,7 @@ class _MainPartState extends State<MainPart> {
     return ListTile(
       titleAlignment: ListTileTitleAlignment.top,
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => (AddPage(widget.task.uuid)),
-            ));
+        widget.onTapEditTask(task.uuid);
       },
       leading: SizedBox(
         width: (task.done || task.importance == Importance.common) ? 50 : 60,

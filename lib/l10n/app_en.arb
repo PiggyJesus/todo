@@ -13,5 +13,6 @@
     "deleted": "Deleted",
     "cancel": "Cancel",
     "newTask": "New",
-    "textErrorMessage": "Insert name"
+    "textErrorMessage": "Insert name",
+    "unknownPage": "Unknown page!"
 }
