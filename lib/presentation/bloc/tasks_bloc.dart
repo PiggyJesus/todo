@@ -2,19 +2,20 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:todo/domain/models/task_model.dart';
-import 'package:todo/data/repository/repository.dart';
 import 'package:todo/domain/repository/task_repository.dart';
 
 part 'tasks_event.dart';
 part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
-  late final TaskRepository repository = Repository();
+  late final TaskRepository _repository;
   List<TaskModel> data = [];
   int doneCount = 0;
   bool visible = true;
 
-  TasksBloc() : super(TasksInitState()) {
+  TasksBloc(TaskRepository repository) : super(TasksInitState()) {
+    _repository = repository;
+
     on<TaskLoadEvent>(_load);
     on<TaskInsertEvent>(_insert);
     on<TaskUpdateEvent>(_update);
@@ -33,7 +34,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
     emit(TasksLoadedState());
 
-    final result = await repository.insert(event.task);
+    final result = await _repository.insert(event.task);
 
     if (!result) {
       add(TaskLoadEvent());
@@ -51,7 +52,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
     emit(TasksLoadedState());
 
-    final result = await repository.update(event.task);
+    final result = await _repository.update(event.task);
 
     if (!result) {
       add(TaskLoadEvent());
@@ -68,7 +69,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
     emit(TasksLoadedState());
 
-    final result = await repository.delete(uuid);
+    final result = await _repository.delete(uuid);
 
     if (!result) {
       add(TaskLoadEvent());
@@ -87,7 +88,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   FutureOr<void> _load(TaskLoadEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
 
-    data = await repository.getAll();
+    data = await _repository.getAll();
     doneCount = 0;
     for (var task in data) {
       if (task.done) {

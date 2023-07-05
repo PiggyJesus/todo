@@ -3,7 +3,11 @@ import 'package:todo/data/local/servise/local_service.dart';
 import 'package:todo/domain/models/task_model.dart';
 
 class LocalUnit {
-  LocalService _localServise = LocalService();
+  late final LocalService _localServise;
+
+  LocalUnit(LocalService localService) {
+    _localServise = localService;
+  }
 
   Future<List<TaskModel>> getAll() async {
     final data = await _localServise.getAll();

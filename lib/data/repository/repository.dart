@@ -5,8 +5,13 @@ import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/domain/repository/task_repository.dart';
 
 class Repository implements TaskRepository {
-  final LocalUnit _localUnit = LocalUnit();
-  final RemoteUnit _remoteUnit = RemoteUnit();
+  late final LocalUnit _localUnit;
+  late final RemoteUnit _remoteUnit;
+
+  Repository({required LocalUnit localUnit, required RemoteUnit remoteUnit}) {
+    _localUnit = localUnit;
+    _remoteUnit = remoteUnit;
+  }
 
   @override
   Future<bool> delete(String uuid) async {
@@ -82,7 +87,6 @@ class Repository implements TaskRepository {
     // remoteData.status == 200 => получили дату и ревизию
 
     var result = true;
-    var remoteIsNotCorrect = false;
 
     RevisionService.set(remoteData.revision!);
 

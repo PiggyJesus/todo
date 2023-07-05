@@ -5,7 +5,11 @@ import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/core/utils/my_exceptions.dart';
 
 class RemoteUnit {
-  final RemoteService _remoteServise = RemoteService();
+  late final RemoteService _remoteServise;
+
+  RemoteUnit(RemoteService remoteService) {
+    _remoteServise = remoteService;
+  }
 
   Future<MyResponse<List<TaskModel>>> getAll() async {
     return _handleExxeptions(() async {
