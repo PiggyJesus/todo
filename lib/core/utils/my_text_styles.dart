@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todo/presentation/utils/my_colors.dart';
+import 'package:todo/core/utils/my_colors.dart';
 
 abstract class MyTextStyles {
   static final lagreTitle = GoogleFonts.roboto(

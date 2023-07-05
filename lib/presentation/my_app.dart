@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/data/repository/repository.dart';
 import 'package:todo/l10n/l10n.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
-import 'package:todo/presentation/utils/my_colors.dart';
+import 'package:todo/core/utils/my_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'pages/tasks_page/tasks_page.dart';

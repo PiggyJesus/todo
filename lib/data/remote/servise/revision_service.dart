@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo/presentation/utils/my_strings.dart';
+import 'package:todo/core/utils/my_strings.dart';
 
 abstract class RevisionService {
   static Future<int> get() async {

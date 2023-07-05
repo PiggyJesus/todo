@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:todo/data/remote/servise/revision_service.dart';
-import 'package:todo/presentation/utils/my_exceptions.dart';
-import 'package:todo/presentation/utils/my_strings.dart';
+import 'package:todo/core/utils/my_exceptions.dart';
+import 'package:todo/core/utils/my_strings.dart';
 
 class RemoteService {
   Dio? _dio;

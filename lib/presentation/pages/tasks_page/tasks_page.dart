@@ -5,8 +5,8 @@ import 'package:todo/presentation/pages/add_page/add_page.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
 import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_appbar.dart';
 import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_list.dart';
-import 'package:todo/presentation/utils/my_colors.dart';
-import 'package:todo/presentation/utils/my_icons.dart';
+import 'package:todo/core/utils/my_colors.dart';
+import 'package:todo/core/utils/my_icons.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({super.key});

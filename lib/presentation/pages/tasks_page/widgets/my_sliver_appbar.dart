@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
-import 'package:todo/presentation/utils/my_colors.dart';
-import 'package:todo/presentation/utils/my_icons.dart';
-import 'package:todo/presentation/utils/my_text_styles.dart';
+import 'package:todo/core/utils/my_colors.dart';
+import 'package:todo/core/utils/my_icons.dart';
+import 'package:todo/core/utils/my_text_styles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {

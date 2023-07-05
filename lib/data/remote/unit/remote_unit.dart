@@ -2,7 +2,7 @@ import 'package:todo/data/remote/servise/remote_service.dart';
 import 'package:todo/data/remote/servise/revision_service.dart';
 import 'package:todo/domain/models/response.dart';
 import 'package:todo/domain/models/task_model.dart';
-import 'package:todo/presentation/utils/my_exceptions.dart';
+import 'package:todo/core/utils/my_exceptions.dart';
 
 class RemoteUnit {
   final RemoteService _remoteServise = RemoteService();
