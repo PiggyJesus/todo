@@ -18,7 +18,7 @@ _$_TaskModel _$$_TaskModelFromJson(Map<String, dynamic> json) => _$_TaskModel(
       lastUpdatedBy: json['last_updated_by'] as String,
       deadline: const EpochDateTimeNullableConverter()
           .fromJson(json['deadline'] as int?),
-      done: json['done'] as bool? ?? true,
+      done: json['done'] as bool? ?? false,
       color: json['color'] as String?,
     );
 

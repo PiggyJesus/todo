@@ -20,7 +20,7 @@ class TaskModel with _$TaskModel {
     required DateTime changedAt,
     @JsonKey(name: 'last_updated_by') required String lastUpdatedBy,
     @EpochDateTimeNullableConverter() DateTime? deadline,
-    @Default(true) bool done,
+    @Default(false) bool done,
     String? color,
     // ignore: deprecated_member_use
     @Default(false) @JsonKey(ignore: true) bool deleted,
