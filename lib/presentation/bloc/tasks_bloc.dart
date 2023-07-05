@@ -9,7 +9,7 @@ part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
   late final TaskRepository _repository;
-  List<TaskModel> data = [];
+  Map<String, TaskModel> data = {};
   int doneCount = 0;
   bool visible = true;
 
@@ -29,7 +29,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       TaskInsertEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
 
-    data.add(event.task);
+    data[event.task.uuid] = event.task;
     if (event.task.done) doneCount++;
 
     emit(TasksLoadedState());
@@ -45,10 +45,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       TaskUpdateEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
 
-    if (data[event.id].done && !event.task.done) doneCount--;
-    if (!data[event.id].done && event.task.done) doneCount++;
+    if (data[event.uuid]!.done && !event.task.done) doneCount--;
+    if (!data[event.uuid]!.done && event.task.done) doneCount++;
 
-    data[event.id] = event.task;
+    data[event.uuid] = event.task;
 
     emit(TasksLoadedState());
 
@@ -63,13 +63,12 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       TaskDeleteEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
 
-    String uuid = data[event.id].uuid;
-    if (data[event.id].done) doneCount--;
-    data.removeAt(event.id);
+    if (data[event.uuid]!.done) doneCount--;
+    data.remove(event.uuid);
 
     emit(TasksLoadedState());
 
-    final result = await _repository.delete(uuid);
+    final result = await _repository.delete(event.uuid);
 
     if (!result) {
       add(TaskLoadEvent());
@@ -88,9 +87,12 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   FutureOr<void> _load(TaskLoadEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
 
-    data = await _repository.getAll();
+    final listData = await _repository.getAll();
     doneCount = 0;
-    for (var task in data) {
+    data = {
+      for (final task in listData) task.uuid: task,
+    };
+    for (var task in data.values) {
       if (task.done) {
         doneCount++;
       }

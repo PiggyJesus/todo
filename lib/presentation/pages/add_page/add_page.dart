@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class AddPage extends StatefulWidget {
-  final int taskId;
+  final String taskId;
   const AddPage(this.taskId, {super.key});
 
   @override
@@ -23,7 +23,7 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   final TextEditingController _textController = TextEditingController();
   late TaskModel task;
-  late int taskId;
+  late String taskId;
   final _formKey = GlobalKey<FormState>();
   late bool newTask;
 
@@ -31,8 +31,10 @@ class _AddPageState extends State<AddPage> {
   void initState() {
     super.initState();
     taskId = widget.taskId;
-    newTask = taskId == -1;
-    if (newTask) {
+    newTask = taskId == '';
+    TaskModel? mayBeTask =
+        BlocProvider.of<TasksBloc>(context).data[widget.taskId];
+    if (newTask || mayBeTask == null) {
       String uuid = const Uuid().v1();
       task = TaskModel(
         uuid: uuid,
@@ -43,7 +45,7 @@ class _AddPageState extends State<AddPage> {
         lastUpdatedBy: "123",
       );
     } else {
-      task = BlocProvider.of<TasksBloc>(context).data[widget.taskId].copyWith();
+      task = mayBeTask;
     }
     _textController.text = task.name;
   }
@@ -76,7 +78,7 @@ class _AddPageState extends State<AddPage> {
                         .add(TaskInsertEvent(task));
                   } else {
                     BlocProvider.of<TasksBloc>(context)
-                        .add(TaskUpdateEvent(task, widget.taskId));
+                        .add(TaskUpdateEvent(task));
                   }
                   Navigator.pop(context);
                 }

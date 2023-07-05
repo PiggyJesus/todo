@@ -26,7 +26,7 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
         ),
         if (state?.isNewTaskPage ?? false)
           const MaterialPage(
-            child: AddPage(-1),
+            child: AddPage(''),
           ),
         if (state?.isEditTaskPage ?? false)
           MaterialPage(
@@ -59,7 +59,7 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
     notifyListeners();
   }
 
-  void _showEditTaskPage(int selectedTaskId) {
+  void _showEditTaskPage(String selectedTaskId) {
     state = NavigationState.editTask(selectedTaskId);
     notifyListeners();
   }

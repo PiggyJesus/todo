@@ -1,7 +1,7 @@
 class NavigationState {
   final bool? _unknown;
   final bool? _newTaskPage;
-  final int? selectedTaskId;
+  final String? selectedTaskId;
 
   bool get isUnknown => _unknown ?? false;
 

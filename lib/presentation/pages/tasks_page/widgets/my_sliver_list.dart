@@ -5,7 +5,7 @@ import 'package:todo/presentation/bloc/tasks_bloc.dart';
 import 'task_widget.dart';
 
 class MySLiverList extends StatelessWidget {
-  final void Function(int selectedTaskId) onTapEditTask;
+  final void Function(String selectedTaskId) onTapEditTask;
   const MySLiverList({
     required this.onTapEditTask,
     super.key,
@@ -23,9 +23,13 @@ class MySLiverList extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: List.generate(
               tasksBloc.data.length,
-              (i) => (!tasksBloc.visible && tasksBloc.data[i].done)
-                  ? const SizedBox()
-                  : TaskWidget(id: i, onTapEditTask: onTapEditTask),
+              (i) =>
+                  (!tasksBloc.visible && tasksBloc.data.values.toList()[i].done)
+                      ? const SizedBox()
+                      : TaskWidget(
+                          task: tasksBloc.data.values.toList()[i],
+                          onTapEditTask: onTapEditTask,
+                        ),
             ),
           ),
         ),

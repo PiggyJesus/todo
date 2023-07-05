@@ -13,11 +13,11 @@ import 'package:todo/core/utils/my_text_styles.dart';
 import 'package:todo/domain/models/task_model.dart';
 
 class TaskWidget extends StatefulWidget {
-  final int id;
-  final void Function(int selectedTaskId) onTapEditTask;
+  final TaskModel task;
+  final void Function(String selectedTaskId) onTapEditTask;
 
   const TaskWidget({
-    required this.id,
+    required this.task,
     required this.onTapEditTask,
     super.key,
   });
@@ -39,12 +39,11 @@ class _TaskWidgetState extends State<TaskWidget> {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: ValueKey(tasksBloc.data[widget.id]),
+      key: ValueKey(widget.task),
       background: LeftShift(offset),
       secondaryBackground: RightShift(offset),
       child: MainPart(
-        task: tasksBloc.data[widget.id].copyWith(),
-        id: widget.id,
+        task: widget.task,
         onTapEditTask: widget.onTapEditTask,
       ),
       onUpdate: (details) {
@@ -54,12 +53,10 @@ class _TaskWidgetState extends State<TaskWidget> {
       },
       confirmDismiss: (direction) {
         if (direction == DismissDirection.endToStart) {
-          tasksBloc.add(TaskDeleteEvent(widget.id));
+          tasksBloc.add(TaskDeleteEvent(widget.task.uuid));
         } else {
           tasksBloc.add(TaskUpdateEvent(
-            tasksBloc.data[widget.id]
-                .copyWith(done: !tasksBloc.data[widget.id].done),
-            widget.id,
+            widget.task.copyWith(done: !widget.task.done),
           ));
         }
 
@@ -70,12 +67,10 @@ class _TaskWidgetState extends State<TaskWidget> {
 }
 
 class MainPart extends StatefulWidget {
-  final void Function(int selectedTaskId) onTapEditTask;
+  final void Function(String selectedTaskId) onTapEditTask;
   final TaskModel task;
-  final int id;
   const MainPart({
     required this.task,
-    required this.id,
     required this.onTapEditTask,
     super.key,
   });
@@ -101,7 +96,7 @@ class _MainPartState extends State<MainPart> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => (AddPage(widget.id)),
+              builder: (context) => (AddPage(widget.task.uuid)),
             ));
       },
       leading: SizedBox(
@@ -127,7 +122,7 @@ class _MainPartState extends State<MainPart> {
                     changedAt: DateTime.now(),
                   );
                   BlocProvider.of<TasksBloc>(context)
-                      .add(TaskUpdateEvent(task.copyWith(), widget.id));
+                      .add(TaskUpdateEvent(task.copyWith()));
                 });
               },
             ),

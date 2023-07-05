@@ -14,15 +14,17 @@ class TaskInsertEvent extends TasksEvent {
 
 class TaskUpdateEvent extends TasksEvent {
   TaskModel task;
-  int id;
+  late String uuid;
 
-  TaskUpdateEvent(this.task, this.id);
+  TaskUpdateEvent(this.task) {
+    uuid = task.uuid;
+  }
 }
 
 class TaskDeleteEvent extends TasksEvent {
-  int id;
+  String uuid;
 
-  TaskDeleteEvent(this.id);
+  TaskDeleteEvent(this.uuid);
 }
 
 class TaskVisibleChangeEvent extends TasksEvent {

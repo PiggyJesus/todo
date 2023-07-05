@@ -9,7 +9,7 @@ import 'package:todo/core/utils/my_icons.dart';
 
 class TasksPage extends StatefulWidget {
   final void Function() onTapNewTask;
-  final void Function(int selectedTaskId) onTapEditTask;
+  final void Function(String selectedTaskId) onTapEditTask;
   const TasksPage({
     required this.onTapNewTask,
     required this.onTapEditTask,
