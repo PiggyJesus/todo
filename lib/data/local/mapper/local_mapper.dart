@@ -13,6 +13,7 @@ class LocalMapper {
       createdAt: task.createdAt,
       lastUpdatedBy: task.lastUpdatedBy,
       color: task.color,
+      deleted: task.deleted,
     );
   }
 
@@ -26,6 +27,7 @@ class LocalMapper {
       ..changedAt = taskModel.changedAt
       ..createdAt = taskModel.createdAt
       ..lastUpdatedBy = taskModel.lastUpdatedBy
-      ..color = taskModel.color;
+      ..color = taskModel.color
+      ..deleted = taskModel.deleted;
   }
 }

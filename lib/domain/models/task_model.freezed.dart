@@ -22,17 +22,25 @@ TaskModel _$TaskModelFromJson(Map<String, dynamic> json) {
 mixin _$TaskModel {
   @JsonKey(name: 'id')
   String get uuid => throw _privateConstructorUsedError;
+  @JsonKey(name: 'text')
   String get name => throw _privateConstructorUsedError;
+  @IpmortanceConverter()
   Importance get importance => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
+  @EpochDateTimeConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'changed_at')
+  @EpochDateTimeConverter()
   DateTime get changedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'last_updated_by')
   String get lastUpdatedBy => throw _privateConstructorUsedError;
+  @EpochDateTimeNullableConverter()
   DateTime? get deadline => throw _privateConstructorUsedError;
   bool get done => throw _privateConstructorUsedError;
-  String? get color => throw _privateConstructorUsedError;
+  String? get color =>
+      throw _privateConstructorUsedError; // ignore: deprecated_member_use
+  @JsonKey(ignore: true)
+  bool get deleted => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,14 +55,15 @@ abstract class $TaskModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'id') String uuid,
-      String name,
-      Importance importance,
-      @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'changed_at') DateTime changedAt,
+      @JsonKey(name: 'text') String name,
+      @IpmortanceConverter() Importance importance,
+      @JsonKey(name: 'created_at') @EpochDateTimeConverter() DateTime createdAt,
+      @JsonKey(name: 'changed_at') @EpochDateTimeConverter() DateTime changedAt,
       @JsonKey(name: 'last_updated_by') String lastUpdatedBy,
-      DateTime? deadline,
+      @EpochDateTimeNullableConverter() DateTime? deadline,
       bool done,
-      String? color});
+      String? color,
+      @JsonKey(ignore: true) bool deleted});
 }
 
 /// @nodoc
@@ -79,6 +88,7 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
     Object? deadline = freezed,
     Object? done = null,
     Object? color = freezed,
+    Object? deleted = null,
   }) {
     return _then(_value.copyWith(
       uuid: null == uuid
@@ -117,6 +127,10 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as String?,
+      deleted: null == deleted
+          ? _value.deleted
+          : deleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -130,14 +144,15 @@ abstract class _$$_TaskModelCopyWith<$Res> implements $TaskModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'id') String uuid,
-      String name,
-      Importance importance,
-      @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'changed_at') DateTime changedAt,
+      @JsonKey(name: 'text') String name,
+      @IpmortanceConverter() Importance importance,
+      @JsonKey(name: 'created_at') @EpochDateTimeConverter() DateTime createdAt,
+      @JsonKey(name: 'changed_at') @EpochDateTimeConverter() DateTime changedAt,
       @JsonKey(name: 'last_updated_by') String lastUpdatedBy,
-      DateTime? deadline,
+      @EpochDateTimeNullableConverter() DateTime? deadline,
       bool done,
-      String? color});
+      String? color,
+      @JsonKey(ignore: true) bool deleted});
 }
 
 /// @nodoc
@@ -160,6 +175,7 @@ class __$$_TaskModelCopyWithImpl<$Res>
     Object? deadline = freezed,
     Object? done = null,
     Object? color = freezed,
+    Object? deleted = null,
   }) {
     return _then(_$_TaskModel(
       uuid: null == uuid
@@ -198,6 +214,10 @@ class __$$_TaskModelCopyWithImpl<$Res>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as String?,
+      deleted: null == deleted
+          ? _value.deleted
+          : deleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -206,15 +226,26 @@ class __$$_TaskModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TaskModel implements _TaskModel {
   const _$_TaskModel(
-      {@JsonKey(name: 'id') required this.uuid,
-      required this.name,
-      required this.importance,
-      @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'changed_at') required this.changedAt,
-      @JsonKey(name: 'last_updated_by') required this.lastUpdatedBy,
-      this.deadline,
+      {@JsonKey(name: 'id')
+          required this.uuid,
+      @JsonKey(name: 'text')
+          required this.name,
+      @IpmortanceConverter()
+          required this.importance,
+      @JsonKey(name: 'created_at')
+      @EpochDateTimeConverter()
+          required this.createdAt,
+      @JsonKey(name: 'changed_at')
+      @EpochDateTimeConverter()
+          required this.changedAt,
+      @JsonKey(name: 'last_updated_by')
+          required this.lastUpdatedBy,
+      @EpochDateTimeNullableConverter()
+          this.deadline,
       this.done = true,
-      this.color});
+      this.color,
+      @JsonKey(ignore: true)
+          this.deleted = false});
 
   factory _$_TaskModel.fromJson(Map<String, dynamic> json) =>
       _$$_TaskModelFromJson(json);
@@ -223,29 +254,38 @@ class _$_TaskModel implements _TaskModel {
   @JsonKey(name: 'id')
   final String uuid;
   @override
+  @JsonKey(name: 'text')
   final String name;
   @override
+  @IpmortanceConverter()
   final Importance importance;
   @override
   @JsonKey(name: 'created_at')
+  @EpochDateTimeConverter()
   final DateTime createdAt;
   @override
   @JsonKey(name: 'changed_at')
+  @EpochDateTimeConverter()
   final DateTime changedAt;
   @override
   @JsonKey(name: 'last_updated_by')
   final String lastUpdatedBy;
   @override
+  @EpochDateTimeNullableConverter()
   final DateTime? deadline;
   @override
   @JsonKey()
   final bool done;
   @override
   final String? color;
+// ignore: deprecated_member_use
+  @override
+  @JsonKey(ignore: true)
+  final bool deleted;
 
   @override
   String toString() {
-    return 'TaskModel(uuid: $uuid, name: $name, importance: $importance, createdAt: $createdAt, changedAt: $changedAt, lastUpdatedBy: $lastUpdatedBy, deadline: $deadline, done: $done, color: $color)';
+    return 'TaskModel(uuid: $uuid, name: $name, importance: $importance, createdAt: $createdAt, changedAt: $changedAt, lastUpdatedBy: $lastUpdatedBy, deadline: $deadline, done: $done, color: $color, deleted: $deleted)';
   }
 
   @override
@@ -266,13 +306,14 @@ class _$_TaskModel implements _TaskModel {
             (identical(other.deadline, deadline) ||
                 other.deadline == deadline) &&
             (identical(other.done, done) || other.done == done) &&
-            (identical(other.color, color) || other.color == color));
+            (identical(other.color, color) || other.color == color) &&
+            (identical(other.deleted, deleted) || other.deleted == deleted));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uuid, name, importance,
-      createdAt, changedAt, lastUpdatedBy, deadline, done, color);
+      createdAt, changedAt, lastUpdatedBy, deadline, done, color, deleted);
 
   @JsonKey(ignore: true)
   @override
@@ -290,15 +331,26 @@ class _$_TaskModel implements _TaskModel {
 
 abstract class _TaskModel implements TaskModel {
   const factory _TaskModel(
-      {@JsonKey(name: 'id') required final String uuid,
-      required final String name,
-      required final Importance importance,
-      @JsonKey(name: 'created_at') required final DateTime createdAt,
-      @JsonKey(name: 'changed_at') required final DateTime changedAt,
-      @JsonKey(name: 'last_updated_by') required final String lastUpdatedBy,
-      final DateTime? deadline,
+      {@JsonKey(name: 'id')
+          required final String uuid,
+      @JsonKey(name: 'text')
+          required final String name,
+      @IpmortanceConverter()
+          required final Importance importance,
+      @JsonKey(name: 'created_at')
+      @EpochDateTimeConverter()
+          required final DateTime createdAt,
+      @JsonKey(name: 'changed_at')
+      @EpochDateTimeConverter()
+          required final DateTime changedAt,
+      @JsonKey(name: 'last_updated_by')
+          required final String lastUpdatedBy,
+      @EpochDateTimeNullableConverter()
+          final DateTime? deadline,
       final bool done,
-      final String? color}) = _$_TaskModel;
+      final String? color,
+      @JsonKey(ignore: true)
+          final bool deleted}) = _$_TaskModel;
 
   factory _TaskModel.fromJson(Map<String, dynamic> json) =
       _$_TaskModel.fromJson;
@@ -307,24 +359,32 @@ abstract class _TaskModel implements TaskModel {
   @JsonKey(name: 'id')
   String get uuid;
   @override
+  @JsonKey(name: 'text')
   String get name;
   @override
+  @IpmortanceConverter()
   Importance get importance;
   @override
   @JsonKey(name: 'created_at')
+  @EpochDateTimeConverter()
   DateTime get createdAt;
   @override
   @JsonKey(name: 'changed_at')
+  @EpochDateTimeConverter()
   DateTime get changedAt;
   @override
   @JsonKey(name: 'last_updated_by')
   String get lastUpdatedBy;
   @override
+  @EpochDateTimeNullableConverter()
   DateTime? get deadline;
   @override
   bool get done;
   @override
   String? get color;
+  @override // ignore: deprecated_member_use
+  @JsonKey(ignore: true)
+  bool get deleted;
   @override
   @JsonKey(ignore: true)
   _$$_TaskModelCopyWith<_$_TaskModel> get copyWith =>

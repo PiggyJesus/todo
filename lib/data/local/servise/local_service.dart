@@ -2,10 +2,10 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:todo/data/local/database/localTask.dart';
 
-class LocalServise {
+class LocalService {
   Isar? _isar;
 
-  LocalServise() {
+  LocalService() {
     _isarGetter;
   }
 
@@ -26,7 +26,8 @@ class LocalServise {
   Future<bool> insert(LocalTask task) async {
     final isar = await _isarGetter;
 
-    final isEmpty = await isar.localTasks.filter().uuidEqualTo(task.uuid).isEmpty();
+    final isEmpty =
+        await isar.localTasks.filter().uuidEqualTo(task.uuid).isEmpty();
     if (!isEmpty) {
       return false;
     }

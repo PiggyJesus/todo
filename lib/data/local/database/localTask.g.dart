@@ -37,29 +37,34 @@ const LocalTaskSchema = CollectionSchema(
       name: r'deadline',
       type: IsarType.dateTime,
     ),
-    r'done': PropertySchema(
+    r'deleted': PropertySchema(
       id: 4,
+      name: r'deleted',
+      type: IsarType.bool,
+    ),
+    r'done': PropertySchema(
+      id: 5,
       name: r'done',
       type: IsarType.bool,
     ),
     r'importance': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'importance',
       type: IsarType.byte,
       enumMap: _LocalTaskimportanceEnumValueMap,
     ),
     r'lastUpdatedBy': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'lastUpdatedBy',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'name',
       type: IsarType.string,
     ),
     r'uuid': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'uuid',
       type: IsarType.string,
     )
@@ -106,11 +111,12 @@ void _localTaskSerialize(
   writer.writeString(offsets[1], object.color);
   writer.writeDateTime(offsets[2], object.createdAt);
   writer.writeDateTime(offsets[3], object.deadline);
-  writer.writeBool(offsets[4], object.done);
-  writer.writeByte(offsets[5], object.importance.index);
-  writer.writeString(offsets[6], object.lastUpdatedBy);
-  writer.writeString(offsets[7], object.name);
-  writer.writeString(offsets[8], object.uuid);
+  writer.writeBool(offsets[4], object.deleted);
+  writer.writeBool(offsets[5], object.done);
+  writer.writeByte(offsets[6], object.importance.index);
+  writer.writeString(offsets[7], object.lastUpdatedBy);
+  writer.writeString(offsets[8], object.name);
+  writer.writeString(offsets[9], object.uuid);
 }
 
 LocalTask _localTaskDeserialize(
@@ -124,13 +130,14 @@ LocalTask _localTaskDeserialize(
   object.color = reader.readStringOrNull(offsets[1]);
   object.createdAt = reader.readDateTime(offsets[2]);
   object.deadline = reader.readDateTimeOrNull(offsets[3]);
-  object.done = reader.readBool(offsets[4]);
+  object.deleted = reader.readBool(offsets[4]);
+  object.done = reader.readBool(offsets[5]);
   object.importance =
-      _LocalTaskimportanceValueEnumMap[reader.readByteOrNull(offsets[5])] ??
+      _LocalTaskimportanceValueEnumMap[reader.readByteOrNull(offsets[6])] ??
           Importance.low;
-  object.lastUpdatedBy = reader.readString(offsets[6]);
-  object.name = reader.readString(offsets[7]);
-  object.uuid = reader.readString(offsets[8]);
+  object.lastUpdatedBy = reader.readString(offsets[7]);
+  object.name = reader.readString(offsets[8]);
+  object.uuid = reader.readString(offsets[9]);
   return object;
 }
 
@@ -152,13 +159,15 @@ P _localTaskDeserializeProp<P>(
     case 4:
       return (reader.readBool(offset)) as P;
     case 5:
+      return (reader.readBool(offset)) as P;
+    case 6:
       return (_LocalTaskimportanceValueEnumMap[reader.readByteOrNull(offset)] ??
           Importance.low) as P;
-    case 6:
-      return (reader.readString(offset)) as P;
     case 7:
       return (reader.readString(offset)) as P;
     case 8:
+      return (reader.readString(offset)) as P;
+    case 9:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -585,6 +594,16 @@ extension LocalTaskQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalTask, LocalTask, QAfterFilterCondition> deletedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'deleted',
+        value: value,
       ));
     });
   }
@@ -1158,6 +1177,18 @@ extension LocalTaskQuerySortBy on QueryBuilder<LocalTask, LocalTask, QSortBy> {
     });
   }
 
+  QueryBuilder<LocalTask, LocalTask, QAfterSortBy> sortByDeleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deleted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalTask, LocalTask, QAfterSortBy> sortByDeletedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deleted', Sort.desc);
+    });
+  }
+
   QueryBuilder<LocalTask, LocalTask, QAfterSortBy> sortByDone() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'done', Sort.asc);
@@ -1269,6 +1300,18 @@ extension LocalTaskQuerySortThenBy
     });
   }
 
+  QueryBuilder<LocalTask, LocalTask, QAfterSortBy> thenByDeleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deleted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalTask, LocalTask, QAfterSortBy> thenByDeletedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deleted', Sort.desc);
+    });
+  }
+
   QueryBuilder<LocalTask, LocalTask, QAfterSortBy> thenByDone() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'done', Sort.asc);
@@ -1369,6 +1412,12 @@ extension LocalTaskQueryWhereDistinct
     });
   }
 
+  QueryBuilder<LocalTask, LocalTask, QDistinct> distinctByDeleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'deleted');
+    });
+  }
+
   QueryBuilder<LocalTask, LocalTask, QDistinct> distinctByDone() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'done');
@@ -1433,6 +1482,12 @@ extension LocalTaskQueryProperty
   QueryBuilder<LocalTask, DateTime?, QQueryOperations> deadlineProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'deadline');
+    });
+  }
+
+  QueryBuilder<LocalTask, bool, QQueryOperations> deletedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'deleted');
     });
   }
 

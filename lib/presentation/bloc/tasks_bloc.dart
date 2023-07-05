@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:todo/data/local/repository/local_repository.dart';
 import 'package:todo/domain/models/task_model.dart';
-import 'package:todo/domain/repository/local/local_task_repository.dart';
+import 'package:todo/data/repository/repository.dart';
+import 'package:todo/domain/repository/task_repository.dart';
 
 part 'tasks_event.dart';
 part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
-  final LocalTaskRepository _repository = LocalRepository();
+  late final TaskRepository repository = Repository();
   List<TaskModel> data = [];
   int doneCount = 0;
   bool visible = true;
@@ -28,12 +28,16 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       TaskInsertEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
 
-    if (await _repository.insert(event.task)) {
-      data.add(event.task);
-      if (event.task.done) doneCount++;
-    }
+    data.add(event.task);
+    if (event.task.done) doneCount++;
 
     emit(TasksLoadedState());
+
+    final result = await repository.insert(event.task);
+
+    if (!result) {
+      add(TaskLoadEvent());
+    }
   }
 
   FutureOr<void> _update(
@@ -47,18 +51,28 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
     emit(TasksLoadedState());
 
-    await _repository.update(event.task);
+    final result = await repository.update(event.task);
+
+    if (!result) {
+      add(TaskLoadEvent());
+    }
   }
 
   FutureOr<void> _delete(
       TaskDeleteEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
 
-    await _repository.delete(data[event.id].uuid);
+    String uuid = data[event.id].uuid;
     if (data[event.id].done) doneCount--;
     data.removeAt(event.id);
 
     emit(TasksLoadedState());
+
+    final result = await repository.delete(uuid);
+
+    if (!result) {
+      add(TaskLoadEvent());
+    }
   }
 
   FutureOr<void> _visibleChange(
@@ -73,7 +87,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   FutureOr<void> _load(TaskLoadEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
 
-    data = await _repository.getAll();
+    data = await repository.getAll();
     doneCount = 0;
     for (var task in data) {
       if (task.done) {

@@ -8,14 +8,16 @@ part of 'task_model.dart';
 
 _$_TaskModel _$$_TaskModelFromJson(Map<String, dynamic> json) => _$_TaskModel(
       uuid: json['id'] as String,
-      name: json['name'] as String,
-      importance: $enumDecode(_$ImportanceEnumMap, json['importance']),
-      createdAt: DateTime.parse(json['created_at'] as String),
-      changedAt: DateTime.parse(json['changed_at'] as String),
+      name: json['text'] as String,
+      importance:
+          const IpmortanceConverter().fromJson(json['importance'] as String),
+      createdAt:
+          const EpochDateTimeConverter().fromJson(json['created_at'] as int),
+      changedAt:
+          const EpochDateTimeConverter().fromJson(json['changed_at'] as int),
       lastUpdatedBy: json['last_updated_by'] as String,
-      deadline: json['deadline'] == null
-          ? null
-          : DateTime.parse(json['deadline'] as String),
+      deadline: const EpochDateTimeNullableConverter()
+          .fromJson(json['deadline'] as int?),
       done: json['done'] as bool? ?? true,
       color: json['color'] as String?,
     );
@@ -23,18 +25,13 @@ _$_TaskModel _$$_TaskModelFromJson(Map<String, dynamic> json) => _$_TaskModel(
 Map<String, dynamic> _$$_TaskModelToJson(_$_TaskModel instance) =>
     <String, dynamic>{
       'id': instance.uuid,
-      'name': instance.name,
-      'importance': _$ImportanceEnumMap[instance.importance]!,
-      'created_at': instance.createdAt.toIso8601String(),
-      'changed_at': instance.changedAt.toIso8601String(),
+      'text': instance.name,
+      'importance': const IpmortanceConverter().toJson(instance.importance),
+      'created_at': const EpochDateTimeConverter().toJson(instance.createdAt),
+      'changed_at': const EpochDateTimeConverter().toJson(instance.changedAt),
       'last_updated_by': instance.lastUpdatedBy,
-      'deadline': instance.deadline?.toIso8601String(),
+      'deadline':
+          const EpochDateTimeNullableConverter().toJson(instance.deadline),
       'done': instance.done,
       'color': instance.color,
     };
-
-const _$ImportanceEnumMap = {
-  Importance.low: 'low',
-  Importance.common: 'common',
-  Importance.high: 'high',
-};

@@ -17,4 +17,5 @@ class LocalTask {
   late DateTime changedAt;
   late String lastUpdatedBy;
   String? color;
+  late bool deleted;
 }

@@ -107,7 +107,10 @@ class _MainPartState extends State<MainPart> {
               }),
               onChanged: (value) {
                 setState(() {
-                  task = task.copyWith(done: value!);
+                  task = task.copyWith(
+                    done: value!,
+                    changedAt: DateTime.now(),
+                  );
                   BlocProvider.of<TasksBloc>(context)
                       .add(TaskUpdateEvent(task.copyWith(), widget.id));
                 });

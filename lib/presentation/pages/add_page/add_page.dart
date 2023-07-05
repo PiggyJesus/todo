@@ -67,7 +67,10 @@ class _AddPageState extends State<AddPage> {
             TextButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  task = task.copyWith(name:  _textController.text);
+                  task = task.copyWith(
+                    name: _textController.text,
+                    changedAt: DateTime.now(),
+                  );
                   if (newTask) {
                     BlocProvider.of<TasksBloc>(context)
                         .add(TaskInsertEvent(task));
@@ -210,7 +213,7 @@ class _AddPageState extends State<AddPage> {
                         }
                       } else {
                         setState(() {
-                            task = task.copyWith(deadline: null);
+                          task = task.copyWith(deadline: null);
                         });
                       }
                     },
