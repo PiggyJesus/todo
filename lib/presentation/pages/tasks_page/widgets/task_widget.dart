@@ -49,7 +49,7 @@ class _TaskWidgetState extends State<TaskWidget> {
         } else {
           tasksBloc.add(TaskUpdateEvent(
             tasksBloc.data[widget.id]
-                .copyWith(isDone: !tasksBloc.data[widget.id].isDone),
+                .copyWith(done: !tasksBloc.data[widget.id].done),
             widget.id,
           ));
         }
@@ -90,12 +90,12 @@ class _MainPartState extends State<MainPart> {
             ));
       },
       leading: SizedBox(
-        width: (task.isDone || task.importance == Importance.common) ? 50 : 60,
+        width: (task.done || task.importance == Importance.common) ? 50 : 60,
         child: Row(
           children: [
             Checkbox(
               splashRadius: 2,
-              value: task.isDone,
+              value: task.done,
               fillColor: MaterialStateProperty.resolveWith<Color>(
                   (Set<MaterialState> states) {
                 if (states.contains(MaterialState.selected)) {
@@ -107,18 +107,18 @@ class _MainPartState extends State<MainPart> {
               }),
               onChanged: (value) {
                 setState(() {
-                  task.isDone = value!;
+                  task = task.copyWith(done: value!);
                   BlocProvider.of<TasksBloc>(context)
                       .add(TaskUpdateEvent(task.copyWith(), widget.id));
                 });
               },
             ),
-            if (!task.isDone && task.importance == Importance.high)
+            if (!task.done && task.importance == Importance.high)
               SvgPicture.asset(
                 MyIcons.doubleExcl,
                 color: MyColors.red,
               ),
-            if (!task.isDone && task.importance == Importance.low)
+            if (!task.done && task.importance == Importance.low)
               SvgPicture.asset(
                 MyIcons.downArrow,
                 color: MyColors.grey,
@@ -136,17 +136,17 @@ class _MainPartState extends State<MainPart> {
       title: Text(
         widget.task.name,
         maxLines: 3,
-        style: task.isDone
+        style: task.done
             ? MyTextStyles.subhead.copyWith(
                 color: MyTextStyles.subhead.color!.withOpacity(0.3),
                 decoration: TextDecoration.lineThrough,
               )
             : MyTextStyles.body,
       ),
-      subtitle: (task.doUntil == null)
+      subtitle: (task.deadline == null)
           ? null
           : Text(
-              DateFormat('dd.MM.yyyy').format(task.doUntil!),
+              DateFormat('dd MMMM yyyy').format(task.deadline!),
               style: MyTextStyles.subhead.copyWith(
                 color: MyTextStyles.subhead.color!.withOpacity(0.3),
               ),
@@ -157,7 +157,7 @@ class _MainPartState extends State<MainPart> {
 
 class LeftShift extends StatelessWidget {
   final double offset;
-  LeftShift(this.offset, {super.key});
+  const LeftShift(this.offset, {super.key});
 
   @override
   Widget build(BuildContext context) {

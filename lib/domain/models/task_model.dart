@@ -1,33 +1,25 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:todo/domain/models/importance.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class TaskModel {
-  final String uuid;
-  Importance importance;
-  DateTime? doUntil;
-  String name;
-  bool isDone;
+part 'task_model.freezed.dart';
+part 'task_model.g.dart';
 
-  TaskModel({
-    required this.uuid,
-    required this.name,
-    required this.importance,
-    this.doUntil,
-    this.isDone = false,
-  });
+@Freezed()
+class TaskModel with _$TaskModel {
+  const factory TaskModel({
+    @JsonKey(name: 'id') required String uuid,
+    required String name,
+    required Importance importance,
+    @JsonKey(name: 'created_at') required DateTime createdAt,
+    @JsonKey(name: 'changed_at') required DateTime changedAt,
+    @JsonKey(name: 'last_updated_by') required String lastUpdatedBy,
+    DateTime? deadline,
+    @Default(true) bool done,
+    String? color,
+  }) = _TaskModel;
 
-  TaskModel copyWith({
-    String? uuid,
-    String? name,
-    DateTime? doUntil,
-    bool? isDone,
-    Importance? importance,
-  }) {
-    return TaskModel(
-      uuid: uuid ?? this.uuid,
-      name: name ?? this.name,
-      doUntil: doUntil ?? this.doUntil,
-      isDone: isDone ?? this.isDone,
-      importance: importance ?? this.importance,
-    );
-  }
+  factory TaskModel.fromJson(Map<String, dynamic> json) =>
+      _$TaskModelFromJson(json);
 }

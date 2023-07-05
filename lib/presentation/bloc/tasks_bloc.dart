@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:todo/data/local/repository/local_repository.dart';
 import 'package:todo/domain/models/task_model.dart';
-import 'package:todo/domain/repository/task_repository.dart';
+import 'package:todo/domain/repository/local/local_task_repository.dart';
 
 part 'tasks_event.dart';
 part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
-  final TaskRepository _repository = LocalRepository();
+  final LocalTaskRepository _repository = LocalRepository();
   List<TaskModel> data = [];
   int doneCount = 0;
   bool visible = true;
@@ -30,7 +30,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
     if (await _repository.insert(event.task)) {
       data.add(event.task);
-      if (event.task.isDone) doneCount++;
+      if (event.task.done) doneCount++;
     }
 
     emit(TasksLoadedState());
@@ -40,13 +40,14 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       TaskUpdateEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
 
-    if (data[event.id].isDone && !event.task.isDone) doneCount--;
-    if (!data[event.id].isDone && event.task.isDone) doneCount++;
+    if (data[event.id].done && !event.task.done) doneCount--;
+    if (!data[event.id].done && event.task.done) doneCount++;
 
     data[event.id] = event.task;
-    await _repository.update(event.task);
 
     emit(TasksLoadedState());
+
+    await _repository.update(event.task);
   }
 
   FutureOr<void> _delete(
@@ -54,7 +55,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     emit(TasksLoadingState());
 
     await _repository.delete(data[event.id].uuid);
-    if (data[event.id].isDone) doneCount--;
+    if (data[event.id].done) doneCount--;
     data.removeAt(event.id);
 
     emit(TasksLoadedState());
@@ -75,7 +76,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     data = await _repository.getAll();
     doneCount = 0;
     for (var task in data) {
-      if (task.isDone) {
+      if (task.done) {
         doneCount++;
       }
     }

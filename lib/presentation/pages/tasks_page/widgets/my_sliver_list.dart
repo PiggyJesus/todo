@@ -19,7 +19,7 @@ class MySLiverList extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: List.generate(
               tasksBloc.data.length,
-              (i) => (!tasksBloc.visible && tasksBloc.data[i].isDone)
+              (i) => (!tasksBloc.visible && tasksBloc.data[i].done)
                   ? const SizedBox()
                   : TaskWidget(i),
             ),

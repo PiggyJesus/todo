@@ -34,7 +34,14 @@ class _AddPageState extends State<AddPage> {
     newTask = taskId == -1;
     if (newTask) {
       String uuid = const Uuid().v1();
-      task = TaskModel(uuid: uuid, name: "", importance: Importance.common);
+      task = TaskModel(
+        uuid: uuid,
+        name: "",
+        importance: Importance.common,
+        changedAt: DateTime.now(),
+        createdAt: DateTime.now(),
+        lastUpdatedBy: "123",
+      );
     } else {
       task = BlocProvider.of<TasksBloc>(context).data[widget.taskId].copyWith();
     }
@@ -60,7 +67,7 @@ class _AddPageState extends State<AddPage> {
             TextButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  task.name = _textController.text;
+                  task = task.copyWith(name:  _textController.text);
                   if (newTask) {
                     BlocProvider.of<TasksBloc>(context)
                         .add(TaskInsertEvent(task));
@@ -149,7 +156,7 @@ class _AddPageState extends State<AddPage> {
               ]),
               onChanged: (Importance? value) {
                 setState(() {
-                  task.importance = value!;
+                  task = task.copyWith(importance: value!);
                 });
               },
               iconSize: 0,
@@ -176,9 +183,9 @@ class _AddPageState extends State<AddPage> {
                         AppLocalizations.of(context)!.doUntil,
                         style: MyTextStyles.body,
                       ),
-                      if (task.doUntil != null)
+                      if (task.deadline != null)
                         Text(
-                          DateFormat('dd.MM.yyyy').format(task.doUntil!),
+                          DateFormat('dd.MM.yyyy').format(task.deadline!),
                           style: MyTextStyles.subhead
                               .copyWith(color: MyColors.blue),
                         ),
@@ -186,7 +193,7 @@ class _AddPageState extends State<AddPage> {
                   ),
                   const Spacer(),
                   Switch(
-                    value: task.doUntil != null,
+                    value: task.deadline != null,
                     onChanged: (value) async {
                       if (value) {
                         final newDate = await showDatePicker(
@@ -198,12 +205,12 @@ class _AddPageState extends State<AddPage> {
 
                         if (newDate != null) {
                           setState(() {
-                            task.doUntil = newDate;
+                            task = task.copyWith(deadline: newDate);
                           });
                         }
                       } else {
                         setState(() {
-                          task.doUntil = null;
+                            task = task.copyWith(deadline: null);
                         });
                       }
                     },

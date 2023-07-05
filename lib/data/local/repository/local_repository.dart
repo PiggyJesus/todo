@@ -1,9 +1,9 @@
 import 'package:todo/data/local/mapper/local_mapper.dart';
 import 'package:todo/data/local/servise/local_servise.dart';
 import 'package:todo/domain/models/task_model.dart';
-import 'package:todo/domain/repository/task_repository.dart';
+import 'package:todo/domain/repository/local/local_task_repository.dart';
 
-class LocalRepository implements TaskRepository {
+class LocalRepository implements LocalTaskRepository {
   final LocalServise _servise = LocalServise();
 
   @override

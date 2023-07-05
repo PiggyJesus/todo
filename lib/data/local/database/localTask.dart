@@ -1,16 +1,20 @@
 import 'package:isar/isar.dart';
 import 'package:todo/domain/models/importance.dart';
 
-part 'task.g.dart';
+part 'localTask.g.dart';
 
 @collection
-class Task {
+class LocalTask {
   Id get id => uuid.hashCode;
 
   @enumerated
   late Importance importance;
   late String uuid;
-  DateTime? doUntil;
+  DateTime? deadline;
   late String name;
-  late bool isDone;
+  late bool done;
+  late DateTime createdAt;
+  late DateTime changedAt;
+  late String lastUpdatedBy;
+  String? color;
 }
