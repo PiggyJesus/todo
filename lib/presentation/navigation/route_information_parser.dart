@@ -9,8 +9,6 @@ class MyRouteInformationParser extends RouteInformationParser<NavigationState> {
   @override
   Future<NavigationState> parseRouteInformation(
       RouteInformation routeInformation) async {
-    print(
-        '-------------------------${routeInformation.location}--------------------------');
     final location = routeInformation.location;
     if (location == null) {
       return NavigationState.unknown();

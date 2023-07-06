@@ -28,7 +28,7 @@ class RemoteService {
   }
 
   Future<Response> post(Map<String, dynamic> data) async {
-    print("post $data");
+    
     return _tryRequest(() => _getDio.post("/list/", data: data));
   }
 

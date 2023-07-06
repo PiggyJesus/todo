@@ -20,7 +20,6 @@ class Repository implements TaskRepository {
     if (localResult) {
       // в локальную бд записалось
       final remoteResult = await _remoteUnit.delete(uuid);
-      print("delete: ${remoteResult.status} ${remoteResult.data}");
       if (remoteResult.status == 400) {
         // не соответвие ревизий или неправильный запрос - синхронизируем
         await _sync();
@@ -45,7 +44,7 @@ class Repository implements TaskRepository {
     if (localResult) {
       // в локальную бд записалось
       final remoteResult = await _remoteUnit.insert(task);
-      print("insert: ${remoteResult.status} ${remoteResult.data}");
+    
       if (remoteResult.status == 400) {
         // не соответвие ревизий или неправильный запрос - синхронизируем
         await _sync();
@@ -63,7 +62,6 @@ class Repository implements TaskRepository {
     if (localResult) {
       // в локальную бд записалось
       final remoteResult = await _remoteUnit.update(task);
-      print("update: ${remoteResult.status} ${remoteResult.data}");
       if (remoteResult.status == 400) {
         // не соответвие ревизий или неправильный запрос - синхронизируем
         await _sync();
@@ -76,13 +74,10 @@ class Repository implements TaskRepository {
 
   Future<bool> _sync() async {
     final localData = await _localUnit.getAll();
-    print("sync - local $localData");
     final remoteData = await _remoteUnit.getAll();
-    print("sync - remote status ${remoteData.status}");
     if (remoteData.status != 200) {
       return false;
     }
-    print("sync - remote ${remoteData.data}");
 
     // remoteData.status == 200 => получили дату и ревизию
 
