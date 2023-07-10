@@ -4,18 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:todo/presentation/add_page/add_page.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
-import 'package:todo/presentation/utils/importance.dart';
-import 'package:todo/presentation/utils/my_colors.dart';
-import 'package:todo/presentation/utils/my_icons.dart';
-import 'package:todo/presentation/utils/my_text_styles.dart';
-import 'package:todo/presentation/utils/task_model.dart';
+import 'package:todo/domain/models/importance.dart';
+import 'package:todo/core/utils/my_colors.dart';
+import 'package:todo/core/utils/my_icons.dart';
+import 'package:todo/core/utils/my_text_styles.dart';
+import 'package:todo/domain/models/task_model.dart';
+import 'package:todo/presentation/navigation/navigation_state.dart';
 
 class TaskWidget extends StatefulWidget {
-  final int id;
+  final TaskModel task;
+  final void Function(NavigationState) onTapNavigate;
 
-  const TaskWidget(this.id, {super.key});
+  const TaskWidget({
+    required this.task,
+    required this.onTapNavigate,
+    super.key,
+  });
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
@@ -34,10 +39,13 @@ class _TaskWidgetState extends State<TaskWidget> {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: ValueKey(tasksBloc.data[widget.id]),
+      key: ValueKey(widget.task),
       background: LeftShift(offset),
       secondaryBackground: RightShift(offset),
-      child: MainPart(tasksBloc.data[widget.id].copyWith(), widget.id),
+      child: MainPart(
+        task: widget.task,
+        onTapNavigate: widget.onTapNavigate,
+      ),
       onUpdate: (details) {
         setState(() {
           offset = details.progress;
@@ -45,12 +53,10 @@ class _TaskWidgetState extends State<TaskWidget> {
       },
       confirmDismiss: (direction) {
         if (direction == DismissDirection.endToStart) {
-          tasksBloc.add(TaskDeleteEvent(widget.id));
+          tasksBloc.add(TaskDeleteEvent(widget.task.uuid));
         } else {
           tasksBloc.add(TaskUpdateEvent(
-            tasksBloc.data[widget.id]
-                .copyWith(isDone: !tasksBloc.data[widget.id].isDone),
-            widget.id,
+            widget.task.copyWith(done: !widget.task.done),
           ));
         }
 
@@ -61,9 +67,13 @@ class _TaskWidgetState extends State<TaskWidget> {
 }
 
 class MainPart extends StatefulWidget {
+  final void Function(NavigationState) onTapNavigate;
   final TaskModel task;
-  final int id;
-  const MainPart(this.task, this.id, {super.key});
+  const MainPart({
+    required this.task,
+    required this.onTapNavigate,
+    super.key,
+  });
 
   @override
   State<MainPart> createState() => _MainPartState();
@@ -83,19 +93,15 @@ class _MainPartState extends State<MainPart> {
     return ListTile(
       titleAlignment: ListTileTitleAlignment.top,
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => (AddPage(widget.id)),
-            ));
+        widget.onTapNavigate(NavigationState.editTask(task.uuid));
       },
       leading: SizedBox(
-        width: (task.isDone || task.importance == Importance.common) ? 50 : 60,
+        width: (task.done || task.importance == Importance.common) ? 50 : 60,
         child: Row(
           children: [
             Checkbox(
               splashRadius: 2,
-              value: task.isDone,
+              value: task.done,
               fillColor: MaterialStateProperty.resolveWith<Color>(
                   (Set<MaterialState> states) {
                 if (states.contains(MaterialState.selected)) {
@@ -107,20 +113,23 @@ class _MainPartState extends State<MainPart> {
               }),
               onChanged: (value) {
                 setState(() {
-                  task.isDone = value!;
+                  task = task.copyWith(
+                    done: value!,
+                    changedAt: DateTime.now(),
+                  );
                   BlocProvider.of<TasksBloc>(context)
-                      .add(TaskUpdateEvent(task.copyWith(), widget.id));
+                      .add(TaskUpdateEvent(task.copyWith()));
                 });
               },
             ),
-            if (!task.isDone && task.importance == Importance.high)
+            if (!task.done && task.importance == Importance.high)
               SvgPicture.asset(
-                MyIcons.double_excl,
+                MyIcons.doubleExcl,
                 color: MyColors.red,
               ),
-            if (!task.isDone && task.importance == Importance.low)
+            if (!task.done && task.importance == Importance.low)
               SvgPicture.asset(
-                MyIcons.down_arrow,
+                MyIcons.downArrow,
                 color: MyColors.grey,
               ),
           ],
@@ -136,17 +145,17 @@ class _MainPartState extends State<MainPart> {
       title: Text(
         widget.task.name,
         maxLines: 3,
-        style: task.isDone
+        style: task.done
             ? MyTextStyles.subhead.copyWith(
                 color: MyTextStyles.subhead.color!.withOpacity(0.3),
                 decoration: TextDecoration.lineThrough,
               )
             : MyTextStyles.body,
       ),
-      subtitle: (task.doUntil == null)
+      subtitle: (task.deadline == null)
           ? null
           : Text(
-              DateFormat('dd.MM.yyyy').format(task.doUntil!),
+              DateFormat('dd MMMM yyyy').format(task.deadline!),
               style: MyTextStyles.subhead.copyWith(
                 color: MyTextStyles.subhead.color!.withOpacity(0.3),
               ),
@@ -157,7 +166,7 @@ class _MainPartState extends State<MainPart> {
 
 class LeftShift extends StatelessWidget {
   final double offset;
-  LeftShift(this.offset, {super.key});
+  const LeftShift(this.offset, {super.key});
 
   @override
   Widget build(BuildContext context) {

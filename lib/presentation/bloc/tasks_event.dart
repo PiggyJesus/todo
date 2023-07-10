@@ -2,6 +2,15 @@ part of 'tasks_bloc.dart';
 
 class TasksEvent {}
 
+class TaskLoadEvent extends TasksEvent {
+  TaskLoadEvent();
+}
+
+class TaskLoadTaskEvent extends TasksEvent {
+  String uuid;
+  TaskLoadTaskEvent(this.uuid);
+}
+
 class TaskInsertEvent extends TasksEvent {
   TaskModel task;
 
@@ -10,15 +19,17 @@ class TaskInsertEvent extends TasksEvent {
 
 class TaskUpdateEvent extends TasksEvent {
   TaskModel task;
-  int id;
+  late String uuid;
 
-  TaskUpdateEvent(this.task, this.id);
+  TaskUpdateEvent(this.task) {
+    uuid = task.uuid;
+  }
 }
 
 class TaskDeleteEvent extends TasksEvent {
-  int id;
+  String uuid;
 
-  TaskDeleteEvent(this.id);
+  TaskDeleteEvent(this.uuid);
 }
 
 class TaskVisibleChangeEvent extends TasksEvent {
