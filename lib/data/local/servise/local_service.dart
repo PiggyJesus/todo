@@ -18,6 +18,12 @@ class LocalService {
     return _isar!;
   }
 
+  Future<LocalTask?> getTask(String uuid) async {
+    final isar = await _isarGetter;
+
+    return isar.localTasks.filter().uuidEqualTo(uuid).findFirst();
+  }
+
   Future<List<LocalTask>> getAll() async {
     final isar = await _isarGetter;
     return isar.localTasks.where().findAll();

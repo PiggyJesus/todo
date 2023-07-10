@@ -1,6 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:get_it/get_it.dart';
-import 'package:todo/presentation/bloc/tasks_bloc.dart';
 import 'package:todo/presentation/navigation/navigation_state.dart';
 
 class MyRouteInformationParser extends RouteInformationParser<NavigationState> {
@@ -32,11 +30,7 @@ class MyRouteInformationParser extends RouteInformationParser<NavigationState> {
         uri.pathSegments.length == 3 && uri.pathSegments[2] == '') {
       if (uri.pathSegments[0] == _editPageRoute) {
         final taskId = uri.pathSegments[1];
-        if (GetIt.I<TasksBloc>().data.containsKey(taskId)) {
-          return NavigationState.editTask(taskId);
-        } else {
-          return NavigationState.unknown();
-        }
+        return NavigationState.editTask(taskId);
       }
 
       return NavigationState.unknown();

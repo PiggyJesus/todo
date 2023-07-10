@@ -23,6 +23,10 @@ class RemoteService {
     return _dio!;
   }
 
+  Future<Response> getTask(String uuid) async {
+    return _tryRequest(() => _getDio.get("/list/$uuid"));
+  }
+
   Future<Response> getAll() async {
     return _tryRequest(() => _getDio.get("/list/"));
   }

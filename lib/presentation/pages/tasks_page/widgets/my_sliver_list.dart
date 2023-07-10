@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
+import 'package:todo/presentation/navigation/navigation_state.dart';
 
 import 'task_widget.dart';
 
 class MySLiverList extends StatelessWidget {
-  final void Function(String selectedTaskId) onTapEditTask;
+  final void Function(NavigationState) onTapNavigate;
   const MySLiverList({
-    required this.onTapEditTask,
+    required this.onTapNavigate,
     super.key,
   });
 
@@ -28,7 +29,7 @@ class MySLiverList extends StatelessWidget {
                       ? const SizedBox()
                       : TaskWidget(
                           task: tasksBloc.data.values.toList()[i],
-                          onTapEditTask: onTapEditTask,
+                          onTapNavigate: onTapNavigate,
                         ),
             ),
           ),

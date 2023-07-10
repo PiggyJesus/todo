@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
+import 'package:todo/presentation/navigation/navigation_state.dart';
 import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_appbar.dart';
 import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_list.dart';
 import 'package:todo/core/utils/my_colors.dart';
 import 'package:todo/core/utils/my_icons.dart';
 
 class TasksPage extends StatefulWidget {
-  final void Function() onTapNewTask;
-  final void Function(String selectedTaskId) onTapEditTask;
+  final void Function(NavigationState) onTapNavigate;
   const TasksPage({
-    required this.onTapNewTask,
-    required this.onTapEditTask,
+    required this.onTapNavigate,
     super.key,
   });
 
@@ -25,7 +24,7 @@ class _TasksPageState extends State<TasksPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<TasksBloc, TasksState>(
       builder: (context, state) {
-        if (state is TasksLoadingState) {
+        if (state is! TasksLoadedState) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
@@ -43,14 +42,14 @@ class _TasksPageState extends State<TasksPage> {
                 ),
               ),
               // ignore: prefer_const_constructors
-              MySLiverList(onTapEditTask: widget.onTapEditTask,),
+              MySLiverList(onTapNavigate: widget.onTapNavigate,),
               // SliverToBoxAdapter(
               //   child: Container(height: 200, color: Colors.red) ,
               // )
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: widget.onTapNewTask,
+            onPressed: () => widget.onTapNavigate(NavigationState.newTask()),
             child: SvgPicture.asset(MyIcons.add, color: MyColors.white),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

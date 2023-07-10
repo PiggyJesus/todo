@@ -66,5 +66,5 @@
  ```
  adb shell am start -W -a android.intent.action.VIEW -d myapp://todo/edit_page/edit_page/<uuid>
  ```
- - при неправильном пути откроется UnknownPage
+ - при неправильном пути откроется страница добавления
  - если команда adb не находится, следует перейти в директорию <...>\Android\Sdk\platform-tools\

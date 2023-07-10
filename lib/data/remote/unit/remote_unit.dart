@@ -51,6 +51,23 @@ class RemoteUnit {
     });
   }
 
+  Future<MyResponse<TaskModel>> getTask(String uuid) async {
+    return _handleExxeptions(() async {
+      final response = await _remoteServise.getTask(uuid);
+
+      if (response.statusCode == 200) {
+        final revision = response.data['revision'];
+        RevisionService.set(revision);
+        return MyResponse(
+          status: response.statusCode!,
+          data: TaskModel.fromJson(response.data['element']),
+          revision: revision,
+        );
+      }
+      return MyResponse(status: response.statusCode!);
+    });
+  }
+
   Future<MyResponse<bool>> insert(TaskModel task) async {
     return _handleExxeptions(() async {
       final data = <String, dynamic>{'element': task.toJson()};

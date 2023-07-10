@@ -6,6 +6,11 @@ class TaskLoadEvent extends TasksEvent {
   TaskLoadEvent();
 }
 
+class TaskLoadTaskEvent extends TasksEvent {
+  String uuid;
+  TaskLoadTaskEvent(this.uuid);
+}
+
 class TaskInsertEvent extends TasksEvent {
   TaskModel task;
 
