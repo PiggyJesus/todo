@@ -94,7 +94,8 @@ void main() {
       final json = taskModels[2].toJson();
 
       expect(json, jsonTasks[2]);
-    });});
+    });
+  });
 
   group('from json tests', () {
     test('test #0', () {

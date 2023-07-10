@@ -34,8 +34,4 @@ class LocalUnit {
   Future<bool> delete(String uuid) {
     return _localServise.delete(uuid);
   }
-
-  Future<bool> setAll(List<TaskModel> taks) {
-    throw Exception("setAll is not emplemented");
-  }
 }

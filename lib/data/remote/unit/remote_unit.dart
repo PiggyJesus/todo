@@ -20,11 +20,11 @@ class RemoteUnit {
         final mappedData =
             data.map((json) => TaskModel.fromJson(json)).toList();
         final int revision = response.data['revision'];
+        RevisionService.set(revision);
 
         return MyResponse(
           status: response.statusCode!,
           data: mappedData,
-          revision: revision,
         );
       }
       return MyResponse(status: response.statusCode!);
@@ -44,7 +44,6 @@ class RemoteUnit {
         return MyResponse(
           status: response.statusCode!,
           data: true,
-          revision: revision,
         );
       }
       return MyResponse(status: response.statusCode!);
@@ -61,7 +60,6 @@ class RemoteUnit {
         return MyResponse(
           status: response.statusCode!,
           data: TaskModel.fromJson(response.data['element']),
-          revision: revision,
         );
       }
       return MyResponse(status: response.statusCode!);
@@ -79,7 +77,6 @@ class RemoteUnit {
         return MyResponse(
           status: response.statusCode!,
           data: true,
-          revision: revision,
         );
       }
       return MyResponse(status: response.statusCode!);
@@ -97,7 +94,6 @@ class RemoteUnit {
         return MyResponse(
           status: response.statusCode!,
           data: true,
-          revision: revision,
         );
       }
       return MyResponse(status: response.statusCode!);
@@ -114,7 +110,6 @@ class RemoteUnit {
         return MyResponse(
           status: response.statusCode!,
           data: true,
-          revision: revision,
         );
       }
       return MyResponse(status: response.statusCode!);

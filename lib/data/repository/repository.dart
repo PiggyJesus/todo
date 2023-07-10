@@ -1,5 +1,4 @@
 import 'package:todo/data/local/unit/local_unit.dart';
-import 'package:todo/data/remote/servise/revision_service.dart';
 import 'package:todo/data/remote/unit/remote_unit.dart';
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/domain/repository/task_repository.dart';
@@ -98,8 +97,6 @@ class TaskRepositoryImpl implements TaskRepository {
     // remoteData.status == 200 => получили дату и ревизию
 
     var result = true;
-
-    RevisionService.set(remoteData.revision!);
 
     var allTasks = <String, TaskModel>{};
 
