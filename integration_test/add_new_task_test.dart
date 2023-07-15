@@ -3,9 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:todo/domain/models/importance.dart';
 import 'test_main.dart' as test_main;
 
+/*Your launch config references a program that does not exist. If you have problems launching, check the "program" field in your ".vscode/launch.json" file.*/
+
 void main() {
   testWidgets("add and editn't new task", (widgetTester) async {
-    test_main.main();
+    await test_main.main();
 
     await widgetTester.pumpAndSettle();
     await widgetTester.tap(find.byType(FloatingActionButton).first);

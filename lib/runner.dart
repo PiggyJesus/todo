@@ -7,12 +7,12 @@ import 'package:todo/data/local/unit/local_unit.dart';
 import 'package:todo/data/remote/servise/remote_service.dart';
 import 'package:todo/data/remote/unit/remote_unit.dart';
 import 'package:todo/data/repository/repository.dart';
-import 'package:todo/presentation/my_app.dart';
+import 'package:todo/presentation/my_app_wrapper.dart';
 
-void main() async {
+void run(String? message) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initDependencies();
-  runApp(MyApp());
+  runApp(MyAppWrapper(message: message));
 }
 
 Future<void> _initDependencies() async {

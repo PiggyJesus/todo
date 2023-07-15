@@ -36,8 +36,9 @@ class _TasksPageState extends State<TasksPage> {
     return BlocBuilder<TasksBloc, TasksState>(
       builder: (context, state) {
         if (state is! TasksLoadedState) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+          return Scaffold(
+            backgroundColor: myColors.primary,
+            body: const Center(child: CircularProgressIndicator()),
           );
         }
 

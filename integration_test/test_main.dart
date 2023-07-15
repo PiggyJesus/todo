@@ -6,14 +6,14 @@ import 'package:todo/data/remote/unit/remote_unit.dart';
 import 'package:todo/data/repository/repository.dart';
 import 'package:todo/domain/repository/task_repository.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
-import 'package:todo/presentation/my_app.dart';
+import 'package:todo/presentation/my_app_wrapper.dart';
 import '../test/data/local_servise_mock.dart';
 import '../test/data/remote_unit_mock.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initDependencies();
-  runApp(MyApp());
+  runApp(const MyAppWrapper(message: "TEST"));
 }
 
 Future<void> _initDependencies() async {
