@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
 import 'package:todo/domain/models/importance.dart';
 import 'package:todo/core/utils/my_colors.dart';
@@ -69,6 +70,9 @@ class _AddPageState extends State<AddPage> {
 
   @override
   Widget build(BuildContext context) {
+    final myColors = GetIt.I<MyColors>();
+    final myTextStyles = GetIt.I<MyTextStyles>();
+    
     return BlocBuilder<TasksBloc, TasksState>(
       builder: (context, state) {
         if (state is! TasksLoadedState) {
@@ -83,9 +87,10 @@ class _AddPageState extends State<AddPage> {
           key: _formKey,
           child: Scaffold(
             appBar: AppBar(
+              backgroundColor: myColors.primary,
               elevation: 0,
               scrolledUnderElevation: 6,
-              leading: CloseButton(color: MyColors.labelPrimary),
+              leading: CloseButton(color: myColors.labelPrimary),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -106,24 +111,24 @@ class _AddPageState extends State<AddPage> {
                   },
                   child: Text(
                     AppLocalizations.of(context)!.save,
-                    style: MyTextStyles.button.copyWith(color: MyColors.blue),
+                    style: myTextStyles.button.copyWith(color: myColors.blue),
                   ),
                 ),
               ],
             ),
-            backgroundColor: MyColors.primary,
+            backgroundColor: myColors.primary,
             body: ListView(
               children: [
                 Container(
                   margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                   decoration: BoxDecoration(
-                    color: MyColors.secondary,
+                    color: myColors.secondary,
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
-                        //New
+                        color: myColors.greyLight,
                         blurRadius: 1.0,
-                        offset: Offset(0, 1),
+                        offset: const Offset(0, 1),
                       ),
                     ],
                   ),
@@ -131,11 +136,11 @@ class _AddPageState extends State<AddPage> {
                   child: TextFormField(
                     controller: _textController,
                     maxLines: null,
-                    style: MyTextStyles.body,
+                    style: myTextStyles.body,
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.textExample,
-                      hintStyle: MyTextStyles.body.copyWith(
-                          color: MyColors.labelTertiary.withOpacity(0.3)),
+                      hintStyle: myTextStyles.body.copyWith(
+                          color: myColors.labelTertiary.withOpacity(0.3)),
                       contentPadding: const EdgeInsets.all(16),
                       border: InputBorder.none,
                     ),
@@ -150,35 +155,35 @@ class _AddPageState extends State<AddPage> {
                   padding: const EdgeInsets.only(left: 16),
                   child: Text(
                     AppLocalizations.of(context)!.priority,
-                    style: MyTextStyles.body,
+                    style: myTextStyles.body,
                   ),
                 ),
                 DropdownButton<Importance>(
                   elevation: 16,
                   underline: const SizedBox(),
                   value: task.importance,
-                  dropdownColor: MyColors.elevated,
+                  dropdownColor: myColors.elevated,
                   items: List.from([
                     DropdownMenuItem(
                       value: Importance.common,
                       child: Text(
                         AppLocalizations.of(context)!.withoutPriority,
-                        style: MyTextStyles.body.copyWith(
-                            color: MyColors.labelTertiary.withOpacity(0.3)),
+                        style: myTextStyles.body.copyWith(
+                            color: myColors.labelTertiary.withOpacity(0.3)),
                       ),
                     ),
                     DropdownMenuItem(
                       value: Importance.low,
                       child: Text(
                         AppLocalizations.of(context)!.lowPriority,
-                        style: MyTextStyles.body,
+                        style: myTextStyles.body,
                       ),
                     ),
                     DropdownMenuItem(
                       value: Importance.high,
                       child: Text(
                         "!! ${AppLocalizations.of(context)!.highPriority}",
-                        style: MyTextStyles.body.copyWith(color: MyColors.red),
+                        style: myTextStyles.body.copyWith(color: myColors.red),
                       ),
                     ),
                   ]),
@@ -190,14 +195,14 @@ class _AddPageState extends State<AddPage> {
                   iconSize: 0,
                   hint: Text(
                     AppLocalizations.of(context)!.doUntil,
-                    style: MyTextStyles.body.copyWith(
-                      color: MyTextStyles.body.color!.withOpacity(0.3),
+                    style: myTextStyles.body.copyWith(
+                      color: myTextStyles.body.color!.withOpacity(0.3),
                     ),
                   ),
                   padding: const EdgeInsets.only(left: 16),
                 ),
                 Divider(
-                  color: MyColors.separator,
+                  color: myColors.separator,
                   thickness: 1,
                   endIndent: 16,
                   indent: 16,
@@ -210,7 +215,7 @@ class _AddPageState extends State<AddPage> {
                         children: [
                           Text(
                             AppLocalizations.of(context)!.doUntil,
-                            style: MyTextStyles.body,
+                            style: myTextStyles.body,
                           ),
                           if (task.deadline != null)
                             Text(
@@ -218,8 +223,8 @@ class _AddPageState extends State<AddPage> {
                                 'dd MMMM yyyy',
                                 AppLocalizations.of(context)!.localeName,
                               ).format(task.deadline!),
-                              style: MyTextStyles.subhead
-                                  .copyWith(color: MyColors.blue),
+                              style: myTextStyles.subhead
+                                  .copyWith(color: myColors.blue),
                             ),
                         ],
                       ),
@@ -228,9 +233,9 @@ class _AddPageState extends State<AddPage> {
                         overlayColor: MaterialStateProperty.resolveWith<Color>(
                             (Set<MaterialState> states) {
                           if (states.contains(MaterialState.selected)) {
-                            return MyColors.blue;
+                            return myColors.blue;
                           }
-                          return MyColors.secondary;
+                          return myColors.secondary;
                         }),
                         value: task.deadline != null,
                         onChanged: (value) async {
@@ -258,7 +263,7 @@ class _AddPageState extends State<AddPage> {
                   ),
                 ),
                 Divider(
-                  color: MyColors.separator,
+                  color: myColors.separator,
                   thickness: 1,
                 ),
                 Padding(
@@ -283,15 +288,15 @@ class _AddPageState extends State<AddPage> {
                           SvgPicture.asset(
                             MyIcons.delete,
                             color:
-                                newTask ? MyColors.labelDisable : MyColors.red,
+                                newTask ? myColors.labelDisable : myColors.red,
                           ),
                           const SizedBox(width: 15),
                           Text(
                             AppLocalizations.of(context)!.delete,
-                            style: MyTextStyles.body.copyWith(
+                            style: myTextStyles.body.copyWith(
                               color: newTask
-                                  ? MyColors.labelDisable
-                                  : MyColors.red,
+                                  ? myColors.labelDisable
+                                  : myColors.red,
                             ),
                           ),
                         ],

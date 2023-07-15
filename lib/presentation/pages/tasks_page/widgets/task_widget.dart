@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
 import 'package:todo/domain/models/importance.dart';
@@ -88,17 +89,22 @@ class MainPart extends StatefulWidget {
 
 class _MainPartState extends State<MainPart> {
   late TaskModel task;
+  late final MyColors myColors;
+  late final MyTextStyles myTextStyles;
 
   @override
   void initState() {
     super.initState();
     task = widget.task;
+    myColors = GetIt.I<MyColors>();
+    myTextStyles = GetIt.I<MyTextStyles>();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return ListTile(
-      tileColor: MyColors.secondary,
+      tileColor: myColors.secondary,
       titleAlignment: ListTileTitleAlignment.top,
       onTap: () {
         widget.onTapNavigate(NavigationState.editTask(task.uuid));
@@ -113,11 +119,11 @@ class _MainPartState extends State<MainPart> {
               fillColor: MaterialStateProperty.resolveWith<Color>(
                   (Set<MaterialState> states) {
                 if (states.contains(MaterialState.selected)) {
-                  return MyColors.green;
+                  return myColors.green;
                 }
                 return task.importance == Importance.high
-                    ? MyColors.red
-                    : MyColors.separator;
+                    ? myColors.red
+                    : myColors.separator;
               }),
               onChanged: (value) {
                 setState(() {
@@ -133,12 +139,12 @@ class _MainPartState extends State<MainPart> {
             if (!task.done && task.importance == Importance.high)
               SvgPicture.asset(
                 MyIcons.doubleExcl,
-                color: MyColors.red,
+                color: myColors.red,
               ),
             if (!task.done && task.importance == Importance.low)
               SvgPicture.asset(
                 MyIcons.downArrow,
-                color: MyColors.grey,
+                color: myColors.grey,
               ),
           ],
         ),
@@ -147,7 +153,7 @@ class _MainPartState extends State<MainPart> {
         padding: const EdgeInsets.only(top: 10),
         child: SvgPicture.asset(
           MyIcons.info,
-          color: MyColors.labelTertiary, // переделать цвет
+          color: myColors.labelTertiary, // переделать цвет
         ),
       ),
       title: Text(
@@ -155,11 +161,11 @@ class _MainPartState extends State<MainPart> {
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
         style: task.done
-            ? MyTextStyles.body.copyWith(
-                color: MyTextStyles.subhead.color!.withOpacity(0.3),
+            ? myTextStyles.body.copyWith(
+                color: myTextStyles.subhead.color!.withOpacity(0.3),
                 decoration: TextDecoration.lineThrough,
               )
-            : MyTextStyles.body,
+            : myTextStyles.body,
       ),
       subtitle: (task.deadline == null)
           ? null
@@ -168,8 +174,8 @@ class _MainPartState extends State<MainPart> {
                 'dd MMMM yyyy',
                 AppLocalizations.of(context)!.localeName,
               ).format(task.deadline!),
-              style: MyTextStyles.subhead.copyWith(
-                color: MyTextStyles.subhead.color!.withOpacity(0.3),
+              style: myTextStyles.subhead.copyWith(
+                color: myTextStyles.subhead.color!.withOpacity(0.3),
               ),
             ),
     );
@@ -178,10 +184,12 @@ class _MainPartState extends State<MainPart> {
 
 class LeftShift extends StatelessWidget {
   final double offset;
-  const LeftShift(this.offset, {super.key});
+  LeftShift(this.offset, {super.key});
 
   @override
   Widget build(BuildContext context) {
+  final myColors = GetIt.I<MyColors>();
+
     final width = MediaQuery.of(context).size.width;
     final iconWidth = 18 / 360 * width;
     final iconPadding = iconWidth * 1.5;
@@ -191,13 +199,13 @@ class LeftShift extends StatelessWidget {
     final flexRight = min(1 - iconPart, 1 - offset) + iconPadding / width;
 
     return Container(
-      color: MyColors.green,
+      color: myColors.green,
       child: Row(
         children: [
           Spacer(flex: (flexLeft * 10000).round() + 1),
           SvgPicture.asset(
             MyIcons.check,
-            color: MyColors.white,
+            color: myColors.white,
             width: iconWidth,
           ),
           Spacer(flex: (flexRight * 10000).round() + 1),
@@ -213,6 +221,8 @@ class RightShift extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final myColors = GetIt.I<MyColors>();
+
     final width = MediaQuery.of(context).size.width;
     final iconWidth = 14 / 360 * width;
     final iconPadding = iconWidth * 2.1;
@@ -222,13 +232,13 @@ class RightShift extends StatelessWidget {
     final flexLeft = min(1 - iconPart, 1 - offset) + iconPadding / width;
 
     return Container(
-      color: MyColors.red,
+      color: myColors.red,
       child: Row(
         children: [
           Spacer(flex: (flexLeft * 10000).round() + 1),
           SvgPicture.asset(
             MyIcons.delete,
-            color: MyColors.white,
+            color: myColors.white,
             width: iconWidth,
           ),
           Spacer(flex: (flexRight * 10000).round() + 1),

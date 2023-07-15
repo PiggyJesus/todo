@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
 import 'package:todo/core/utils/my_colors.dart';
 import 'package:todo/core/utils/my_icons.dart';
@@ -20,25 +21,29 @@ class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
+    final myColors = GetIt.I<MyColors>();
+    final myTextStyles = GetIt.I<MyTextStyles>();
+
+    
     return LayoutBuilder(builder: (context, constrains) {
       final size = constrains.maxHeight;
       final animationFactor = (size - minExtent) / (maxExtent - minExtent);
       Color backgroundColor;
       if (ThemeMode.system == ThemeMode.light) {
-        backgroundColor = MyColors.primary;
+        backgroundColor = myColors.primary;
       } else {
-        backgroundColor = MyColors.primary.withBlue(
-            ((MyColors.primary.blue - MyColors.secondary.blue) *
+        backgroundColor = myColors.primary.withBlue(
+            ((myColors.primary.blue - myColors.secondary.blue) *
                         animationFactor +
-                    MyColors.secondary.blue)
+                    myColors.secondary.blue)
                 .toInt()).withGreen(
-            ((MyColors.primary.green - MyColors.secondary.green) *
+            ((myColors.primary.green - myColors.secondary.green) *
                         animationFactor +
-                    MyColors.secondary.green)
+                    myColors.secondary.green)
                 .toInt()).withRed(
-            ((MyColors.primary.red - MyColors.secondary.red) *
+            ((myColors.primary.red - myColors.secondary.red) *
                         animationFactor +
-                    MyColors.secondary.red)
+                    myColors.secondary.red)
                 .toInt());
       }
 
@@ -63,7 +68,7 @@ class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {
               left: 16 + 44 * animationFactor,
               child: Text(
                 AppLocalizations.of(context)!.myTasks,
-                style: MyTextStyles.lagreTitle
+                style: myTextStyles.lagreTitle
                     .copyWith(fontSize: 20 + 12 * animationFactor),
               ),
             ),
@@ -72,9 +77,9 @@ class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {
               left: 60 + 120 * (1 - animationFactor),
               child: Text(
                 '${AppLocalizations.of(context)!.done} — ${tasksBloc.doneCount}',
-                style: MyTextStyles.body.copyWith(
+                style: myTextStyles.body.copyWith(
                   color:
-                      MyColors.labelTertiary.withOpacity(0.3 * animationFactor),
+                      myColors.labelTertiary.withOpacity(0.3 * animationFactor),
                 ),
               ),
             ),
@@ -93,7 +98,7 @@ class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {
                     tasksBloc.visible
                         ? MyIcons.visibility
                         : MyIcons.visibilityOff,
-                    color: MyColors.blue,
+                    color: myColors.blue,
                   ),
                 ),
               ),

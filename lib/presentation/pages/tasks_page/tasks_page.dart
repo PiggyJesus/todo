@@ -1,6 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:todo/presentation/bloc/tasks_bloc.dart';
 import 'package:todo/presentation/navigation/navigation_state.dart';
 import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_appbar.dart';
@@ -20,6 +23,14 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> {
+  late final MyColors myColors;
+
+  @override
+  void initState() {
+    super.initState();
+    myColors = GetIt.I<MyColors>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TasksBloc, TasksState>(
@@ -31,7 +42,7 @@ class _TasksPageState extends State<TasksPage> {
         }
 
         return Scaffold(
-          backgroundColor: MyColors.primary,
+          backgroundColor: myColors.primary,
           body: CustomScrollView(
             slivers: [
               SliverPersistentHeader(
@@ -42,7 +53,9 @@ class _TasksPageState extends State<TasksPage> {
                 ),
               ),
               // ignore: prefer_const_constructors
-              MySLiverList(onTapNavigate: widget.onTapNavigate,),
+              MySLiverList(
+                onTapNavigate: widget.onTapNavigate,
+              ),
               // SliverToBoxAdapter(
               //   child: Container(height: 200, color: Colors.red) ,
               // )
@@ -50,7 +63,7 @@ class _TasksPageState extends State<TasksPage> {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => widget.onTapNavigate(NavigationState.newTask()),
-            child: SvgPicture.asset(MyIcons.add, color: MyColors.white),
+            child: SvgPicture.asset(MyIcons.add, color: myColors.white),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         );
