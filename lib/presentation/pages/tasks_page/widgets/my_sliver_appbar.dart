@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,14 +23,32 @@ class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {
     return LayoutBuilder(builder: (context, constrains) {
       final size = constrains.maxHeight;
       final animationFactor = (size - minExtent) / (maxExtent - minExtent);
+      Color backgroundColor;
+      if (ThemeMode.system == ThemeMode.light) {
+        backgroundColor = MyColors.primary;
+      } else {
+        backgroundColor = MyColors.primary.withBlue(
+            ((MyColors.primary.blue - MyColors.secondary.blue) *
+                        animationFactor +
+                    MyColors.secondary.blue)
+                .toInt()).withGreen(
+            ((MyColors.primary.green - MyColors.secondary.green) *
+                        animationFactor +
+                    MyColors.secondary.green)
+                .toInt()).withRed(
+            ((MyColors.primary.red - MyColors.secondary.red) *
+                        animationFactor +
+                    MyColors.secondary.red)
+                .toInt());
+      }
+
       return Container(
         height: size,
         decoration: BoxDecoration(
-          color: MyColors.primary,
+          color: backgroundColor,
           boxShadow: [
             if (shrinkOffset > maxExtent - minExtent)
               const BoxShadow(
-                color: Colors.grey,
                 blurRadius: 1.0,
                 offset: Offset(0, 1),
               ),

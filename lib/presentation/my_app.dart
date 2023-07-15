@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primarySwatch: Colors.blue,
             backgroundColor: MyColors.primary,
-            appBarTheme: const AppBarTheme(
+            appBarTheme: AppBarTheme(
               backgroundColor: MyColors.primary,
             )),
         debugShowCheckedModeBanner: false,

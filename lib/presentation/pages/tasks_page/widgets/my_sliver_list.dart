@@ -24,13 +24,10 @@ class MySLiverList extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: List.generate(
               tasksBloc.data.length,
-              (i) =>
-                  (!tasksBloc.visible && tasksBloc.data.values.toList()[i].done)
-                      ? const SizedBox()
-                      : TaskWidget(
-                          task: tasksBloc.data.values.toList()[i],
-                          onTapNavigate: onTapNavigate,
-                        ),
+              (i) => TaskWidget(
+                task: tasksBloc.data.values.toList()[i],
+                onTapNavigate: onTapNavigate,
+              ),
             ),
           ),
         ),

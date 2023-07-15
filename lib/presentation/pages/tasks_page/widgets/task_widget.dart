@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:todo/core/utils/my_icons.dart';
 import 'package:todo/core/utils/my_text_styles.dart';
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/presentation/navigation/navigation_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskWidget extends StatefulWidget {
   final TaskModel task;
@@ -27,42 +30,46 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  late final TasksBloc tasksBloc;
   double offset = 0;
 
   @override
   void initState() {
     super.initState();
-    tasksBloc = BlocProvider.of<TasksBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: ValueKey(widget.task),
-      background: LeftShift(offset),
-      secondaryBackground: RightShift(offset),
-      child: MainPart(
-        task: widget.task,
-        onTapNavigate: widget.onTapNavigate,
-      ),
-      onUpdate: (details) {
-        setState(() {
-          offset = details.progress;
-        });
-      },
-      confirmDismiss: (direction) {
-        if (direction == DismissDirection.endToStart) {
-          tasksBloc.add(TaskDeleteEvent(widget.task.uuid));
-        } else {
-          tasksBloc.add(TaskUpdateEvent(
-            widget.task.copyWith(done: !widget.task.done),
-          ));
-        }
+    return BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
+      final tasksBloc = BlocProvider.of<TasksBloc>(context);
+      if (!tasksBloc.visible && widget.task.done) {
+        return const SizedBox();
+      }
+      return Dismissible(
+        key: ValueKey(widget.task),
+        background: LeftShift(offset),
+        secondaryBackground: RightShift(offset),
+        child: MainPart(
+          task: widget.task,
+          onTapNavigate: widget.onTapNavigate,
+        ),
+        onUpdate: (details) {
+          setState(() {
+            offset = details.progress;
+          });
+        },
+        confirmDismiss: (direction) {
+          if (direction == DismissDirection.endToStart) {
+            tasksBloc.add(TaskDeleteEvent(widget.task.uuid));
+          } else {
+            tasksBloc.add(TaskUpdateEvent(
+              widget.task.copyWith(done: !widget.task.done),
+            ));
+          }
 
-        return Future<bool>.value(false);
-      },
-    );
+          return Future<bool>.value(false);
+        },
+      );
+    });
   }
 }
 
@@ -91,6 +98,7 @@ class _MainPartState extends State<MainPart> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      tileColor: MyColors.secondary,
       titleAlignment: ListTileTitleAlignment.top,
       onTap: () {
         widget.onTapNavigate(NavigationState.editTask(task.uuid));
@@ -145,8 +153,9 @@ class _MainPartState extends State<MainPart> {
       title: Text(
         widget.task.name,
         maxLines: 3,
+        overflow: TextOverflow.ellipsis,
         style: task.done
-            ? MyTextStyles.subhead.copyWith(
+            ? MyTextStyles.body.copyWith(
                 color: MyTextStyles.subhead.color!.withOpacity(0.3),
                 decoration: TextDecoration.lineThrough,
               )
@@ -155,7 +164,10 @@ class _MainPartState extends State<MainPart> {
       subtitle: (task.deadline == null)
           ? null
           : Text(
-              DateFormat('dd MMMM yyyy').format(task.deadline!),
+              DateFormat(
+                'dd MMMM yyyy',
+                AppLocalizations.of(context)!.localeName,
+              ).format(task.deadline!),
               style: MyTextStyles.subhead.copyWith(
                 color: MyTextStyles.subhead.color!.withOpacity(0.3),
               ),

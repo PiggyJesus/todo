@@ -45,15 +45,15 @@ class _AddPageState extends State<AddPage> {
     TaskModel? mayBeTask =
         BlocProvider.of<TasksBloc>(context).data[widget.taskId];
     if (newTask || mayBeTask == null) {
-        String uuid = const Uuid().v1();
-        task = TaskModel(
-          uuid: uuid,
-          name: "",
-          importance: Importance.common,
-          changedAt: DateTime.now(),
-          createdAt: DateTime.now(),
-          lastUpdatedBy: "123",
-        );
+      String uuid = const Uuid().v1();
+      task = TaskModel(
+        uuid: uuid,
+        name: "",
+        importance: Importance.common,
+        changedAt: DateTime.now(),
+        createdAt: DateTime.now(),
+        lastUpdatedBy: "123",
+      );
     } else {
       task = mayBeTask;
     }
@@ -85,7 +85,7 @@ class _AddPageState extends State<AddPage> {
             appBar: AppBar(
               elevation: 0,
               scrolledUnderElevation: 6,
-              leading: const CloseButton(color: MyColors.labelPrimary),
+              leading: CloseButton(color: MyColors.labelPrimary),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -116,12 +116,12 @@ class _AddPageState extends State<AddPage> {
               children: [
                 Container(
                   margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: MyColors.secondary,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    boxShadow: [
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    boxShadow: const [
                       BoxShadow(
-                        color: Colors.grey, //New
+                        //New
                         blurRadius: 1.0,
                         offset: Offset(0, 1),
                       ),
@@ -131,6 +131,7 @@ class _AddPageState extends State<AddPage> {
                   child: TextFormField(
                     controller: _textController,
                     maxLines: null,
+                    style: MyTextStyles.body,
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.textExample,
                       hintStyle: MyTextStyles.body.copyWith(
@@ -156,6 +157,7 @@ class _AddPageState extends State<AddPage> {
                   elevation: 16,
                   underline: const SizedBox(),
                   value: task.importance,
+                  dropdownColor: MyColors.elevated,
                   items: List.from([
                     DropdownMenuItem(
                       value: Importance.common,
@@ -194,7 +196,8 @@ class _AddPageState extends State<AddPage> {
                   ),
                   padding: const EdgeInsets.only(left: 16),
                 ),
-                const Divider(
+                Divider(
+                  color: MyColors.separator,
                   thickness: 1,
                   endIndent: 16,
                   indent: 16,
@@ -211,7 +214,10 @@ class _AddPageState extends State<AddPage> {
                           ),
                           if (task.deadline != null)
                             Text(
-                              DateFormat('dd.MM.yyyy').format(task.deadline!),
+                              DateFormat(
+                                'dd MMMM yyyy',
+                                AppLocalizations.of(context)!.localeName,
+                              ).format(task.deadline!),
                               style: MyTextStyles.subhead
                                   .copyWith(color: MyColors.blue),
                             ),
@@ -219,13 +225,20 @@ class _AddPageState extends State<AddPage> {
                       ),
                       const Spacer(),
                       Switch(
+                        overlayColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return MyColors.blue;
+                          }
+                          return MyColors.secondary;
+                        }),
                         value: task.deadline != null,
                         onChanged: (value) async {
                           if (value) {
                             final newDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime(0),
+                              firstDate: DateTime.now(),
                               lastDate: DateTime(3000),
                             );
 
@@ -244,7 +257,8 @@ class _AddPageState extends State<AddPage> {
                     ],
                   ),
                 ),
-                const Divider(
+                Divider(
+                  color: MyColors.separator,
                   thickness: 1,
                 ),
                 Padding(

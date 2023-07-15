@@ -10,7 +10,7 @@ class UnknownPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(color: MyColors.labelPrimary),
+        leading: BackButton(color: MyColors.labelPrimary),
         title: Text(
           AppLocalizations.of(context)!.unknownPage,
           style: MyTextStyles.title,
