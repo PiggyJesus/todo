@@ -1,0 +1,27 @@
+name: ci
+
+on: [push]
+
+jobs:
+    main:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: subosito/flutter-action@v2
+              with:
+                channel: 'stable'
+
+            - name: Getting dependencies
+              run: flutter pub get
+
+            - name: Checking code format
+              run: dart format --set-exit-if-changed lib/
+
+            - name: Analyzing
+              run: flutter analyze --no-fatal-infos
+
+            - name: Testing
+              run: flutter test
+              
+            - name: Build
+              run: flutter build apk
