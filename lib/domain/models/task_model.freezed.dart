@@ -226,20 +226,26 @@ class __$$_TaskModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TaskModel implements _TaskModel {
   const _$_TaskModel(
-      {@JsonKey(name: 'id') required this.uuid,
-      @JsonKey(name: 'text') required this.name,
-      @IpmortanceConverter() required this.importance,
+      {@JsonKey(name: 'id')
+          required this.uuid,
+      @JsonKey(name: 'text')
+          required this.name,
+      @IpmortanceConverter()
+          required this.importance,
       @JsonKey(name: 'created_at')
       @EpochDateTimeConverter()
-      required this.createdAt,
+          required this.createdAt,
       @JsonKey(name: 'changed_at')
       @EpochDateTimeConverter()
-      required this.changedAt,
-      @JsonKey(name: 'last_updated_by') required this.lastUpdatedBy,
-      @EpochDateTimeNullableConverter() this.deadline,
+          required this.changedAt,
+      @JsonKey(name: 'last_updated_by')
+          required this.lastUpdatedBy,
+      @EpochDateTimeNullableConverter()
+          this.deadline,
       this.done = false,
       this.color,
-      @JsonKey(ignore: true) this.deleted = false});
+      @JsonKey(ignore: true)
+          this.deleted = false});
 
   factory _$_TaskModel.fromJson(Map<String, dynamic> json) =>
       _$$_TaskModelFromJson(json);
@@ -325,20 +331,26 @@ class _$_TaskModel implements _TaskModel {
 
 abstract class _TaskModel implements TaskModel {
   const factory _TaskModel(
-      {@JsonKey(name: 'id') required final String uuid,
-      @JsonKey(name: 'text') required final String name,
-      @IpmortanceConverter() required final Importance importance,
+      {@JsonKey(name: 'id')
+          required final String uuid,
+      @JsonKey(name: 'text')
+          required final String name,
+      @IpmortanceConverter()
+          required final Importance importance,
       @JsonKey(name: 'created_at')
       @EpochDateTimeConverter()
-      required final DateTime createdAt,
+          required final DateTime createdAt,
       @JsonKey(name: 'changed_at')
       @EpochDateTimeConverter()
-      required final DateTime changedAt,
-      @JsonKey(name: 'last_updated_by') required final String lastUpdatedBy,
-      @EpochDateTimeNullableConverter() final DateTime? deadline,
+          required final DateTime changedAt,
+      @JsonKey(name: 'last_updated_by')
+          required final String lastUpdatedBy,
+      @EpochDateTimeNullableConverter()
+          final DateTime? deadline,
       final bool done,
       final String? color,
-      @JsonKey(ignore: true) final bool deleted}) = _$_TaskModel;
+      @JsonKey(ignore: true)
+          final bool deleted}) = _$_TaskModel;
 
   factory _TaskModel.fromJson(Map<String, dynamic> json) =
       _$_TaskModel.fromJson;

@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:todo/domain/models/importance.dart';
 
-part 'localTask.g.dart';
+part 'local_task.g.dart';
 
 @collection
 class LocalTask {

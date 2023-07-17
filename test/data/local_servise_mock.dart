@@ -1,5 +1,5 @@
 import 'package:mockito/mockito.dart';
-import 'package:todo/data/local/database/localTask.dart';
+import 'package:todo/data/local/database/local_task.dart';
 import 'package:todo/data/local/servise/local_service.dart';
 
 class LocalServiseMock extends Mock implements LocalService {

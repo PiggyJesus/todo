@@ -193,7 +193,7 @@ class _MainPartState extends State<MainPart> {
 
 class LeftShift extends StatelessWidget {
   final double offset;
-  LeftShift(this.offset, {super.key});
+  const LeftShift(this.offset, {super.key});
 
   @override
   Widget build(BuildContext context) {

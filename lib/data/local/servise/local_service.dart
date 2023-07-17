@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:todo/data/local/database/localTask.dart';
+import 'package:todo/data/local/database/local_task.dart';
 
 class LocalService {
   Isar? _isar;
