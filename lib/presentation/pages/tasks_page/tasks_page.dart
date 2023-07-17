@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
-import 'package:todo/presentation/bloc/tasks_bloc.dart';
+import 'package:todo/presentation/bloc/tasks_bloc/tasks_bloc.dart';
 import 'package:todo/presentation/navigation/navigation_state.dart';
 import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_appbar.dart';
 import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_list.dart';
@@ -62,11 +62,26 @@ class _TasksPageState extends State<TasksPage> {
               // )
             ],
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => widget.onTapNavigate(NavigationState.newTask()),
-            child: SvgPicture.asset(MyIcons.add, color: myColors.white),
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                heroTag: "errorButton",
+                backgroundColor: myColors.red,
+                onPressed: () {
+                  throw Exception("test exception");
+                },
+                child: Icon(Icons.warning, color: myColors.white),
+              ),
+              const SizedBox(width: 10),
+              FloatingActionButton(
+                heroTag: "mainButton",
+                onPressed: () =>
+                    widget.onTapNavigate(NavigationState.newTask()),
+                child: SvgPicture.asset(MyIcons.add, color: myColors.white),
+              ),
+            ],
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         );
       },
     );

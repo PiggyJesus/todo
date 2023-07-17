@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/presentation/navigation/navigation_state.dart';
 import 'package:todo/presentation/pages/add_page/add_page.dart';
@@ -54,6 +55,11 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
 
   @override
   Future<void> setNewRoutePath(NavigationState configuration) async {
+    if (configuration.isRoot) {
+      FirebaseAnalytics.instance.logEvent(name: "go_to_main_page");
+    } else if (configuration.isEditTaskPage || configuration.isNewTaskPage) {
+      FirebaseAnalytics.instance.logEvent(name: "go_to_add_page");
+    }
     state = configuration;
     notifyListeners();
   }

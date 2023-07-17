@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/domain/repository/task_repository.dart';
 
@@ -9,14 +10,19 @@ part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
   late final TaskRepository _repository;
+  late final FirebaseAnalytics? _analyticsInstance;
   TaskModel? currentTask;
   bool gotCurrentTask = false;
   Map<String, TaskModel> data = {};
   int doneCount = 0;
   bool visible = true;
 
-  TasksBloc(TaskRepository repository) : super(TasksInitState()) {
+  TasksBloc(
+    TaskRepository repository, {
+    FirebaseAnalytics? analyticsInstance,
+  }) : super(TasksInitState()) {
     _repository = repository;
+    _analyticsInstance = analyticsInstance;
 
     on<TaskLoadEvent>(_load);
     on<TaskLoadTaskEvent>(_loadTask);
@@ -37,6 +43,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
     emit(TasksLoadedState());
 
+    if (_analyticsInstance != null) {
+      _analyticsInstance!.logEvent(name: "task_add");
+    }
+
     final result = await _repository.insert(event.task);
 
     if (!result) {
@@ -48,8 +58,20 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       TaskUpdateEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoadingState());
 
-    if (data[event.uuid]!.done && !event.task.done) doneCount--;
-    if (!data[event.uuid]!.done && event.task.done) doneCount++;
+    if (data[event.uuid]!.done && !event.task.done) {
+      doneCount--;
+
+      if (_analyticsInstance != null) {
+        _analyticsInstance!.logEvent(name: "task_not_done");
+      }
+    }
+    if (!data[event.uuid]!.done && event.task.done) {
+      doneCount++;
+
+      if (_analyticsInstance != null) {
+        _analyticsInstance!.logEvent(name: "task_done");
+      }
+    }
 
     data[event.uuid] = event.task;
 
@@ -71,6 +93,9 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
     emit(TasksLoadedState());
 
+    if (_analyticsInstance != null) {
+      _analyticsInstance!.logEvent(name: "task_delete");
+    }
     final result = await _repository.delete(event.uuid);
 
     if (!result) {

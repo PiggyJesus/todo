@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "946663454672",
+    "project_id": "yandex-to-do-kulakov",
+    "storage_bucket": "yandex-to-do-kulakov.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946663454672:android:1333cdb67151f88c192bd5",
+        "android_client_info": {
+          "package_name": "com.example.todo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946663454672-lo9t9d06fgkvo0cmbi7mmmju6lr9p07o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM3prIibkR8wldozoFPoM4HknzXUrPl8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946663454672-lo9t9d06fgkvo0cmbi7mmmju6lr9p07o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946663454672:android:baea17c915fa728c192bd5",
+        "android_client_info": {
+          "package_name": "com.example.todo.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946663454672-lo9t9d06fgkvo0cmbi7mmmju6lr9p07o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM3prIibkR8wldozoFPoM4HknzXUrPl8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946663454672-lo9t9d06fgkvo0cmbi7mmmju6lr9p07o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

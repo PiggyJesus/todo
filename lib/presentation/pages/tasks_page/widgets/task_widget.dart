@@ -7,7 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:todo/presentation/bloc/tasks_bloc.dart';
+import 'package:todo/presentation/bloc/importance_color_bloc/importance_color_bloc.dart';
+import 'package:todo/presentation/bloc/tasks_bloc/tasks_bloc.dart';
 import 'package:todo/domain/models/importance.dart';
 import 'package:todo/core/utils/my_colors.dart';
 import 'package:todo/core/utils/my_icons.dart';
@@ -101,85 +102,93 @@ class _MainPartState extends State<MainPart> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      BlocBuilder<ColorBloc, ColorState>(builder: (context, state) {
+        var highImportanceColor = myColors.red;
+        if (state is ColorLoadedState) {
+          if (state.color == ImportanceColor.purple) {
+            highImportanceColor = myColors.purple;
+          }
+        }
 
-    return ListTile(
-      tileColor: myColors.secondary,
-      titleAlignment: ListTileTitleAlignment.top,
-      onTap: () {
-        widget.onTapNavigate(NavigationState.editTask(task.uuid));
-      },
-      leading: SizedBox(
-        width: (task.done || task.importance == Importance.common) ? 50 : 60,
-        child: Row(
-          children: [
-            Checkbox(
-              splashRadius: 2,
-              value: task.done,
-              fillColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.selected)) {
-                  return myColors.green;
-                }
-                return task.importance == Importance.high
-                    ? myColors.red
-                    : myColors.separator;
-              }),
-              onChanged: (value) {
-                setState(() {
-                  task = task.copyWith(
-                    done: value!,
-                    changedAt: DateTime.now(),
-                  );
-                  BlocProvider.of<TasksBloc>(context)
-                      .add(TaskUpdateEvent(task.copyWith()));
-                });
-              },
+        return ListTile(
+          tileColor: myColors.secondary,
+          titleAlignment: ListTileTitleAlignment.top,
+          onTap: () {
+            widget.onTapNavigate(NavigationState.editTask(task.uuid));
+          },
+          leading: SizedBox(
+            width:
+                (task.done || task.importance == Importance.common) ? 50 : 60,
+            child: Row(
+              children: [
+                Checkbox(
+                  splashRadius: 2,
+                  value: task.done,
+                  fillColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.selected)) {
+                      return myColors.green;
+                    }
+                    return task.importance == Importance.high
+                        ? highImportanceColor
+                        : myColors.separator;
+                  }),
+                  onChanged: (value) {
+                    setState(() {
+                      task = task.copyWith(
+                        done: value!,
+                        changedAt: DateTime.now(),
+                      );
+                      BlocProvider.of<TasksBloc>(context)
+                          .add(TaskUpdateEvent(task.copyWith()));
+                    });
+                  },
+                ),
+                if (!task.done && task.importance == Importance.high)
+                  SvgPicture.asset(
+                    MyIcons.doubleExcl,
+                    color: highImportanceColor,
+                  ),
+                if (!task.done && task.importance == Importance.low)
+                  SvgPicture.asset(
+                    MyIcons.downArrow,
+                    color: myColors.grey,
+                  ),
+              ],
             ),
-            if (!task.done && task.importance == Importance.high)
-              SvgPicture.asset(
-                MyIcons.doubleExcl,
-                color: myColors.red,
-              ),
-            if (!task.done && task.importance == Importance.low)
-              SvgPicture.asset(
-                MyIcons.downArrow,
-                color: myColors.grey,
-              ),
-          ],
-        ),
-      ),
-      trailing: Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: SvgPicture.asset(
-          MyIcons.info,
-          color: myColors.labelTertiary, // переделать цвет
-        ),
-      ),
-      title: Text(
-        widget.task.name,
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-        style: task.done
-            ? myTextStyles.body.copyWith(
-                color: myTextStyles.subhead.color!.withOpacity(0.3),
-                decoration: TextDecoration.lineThrough,
-              )
-            : myTextStyles.body,
-      ),
-      subtitle: (task.deadline == null)
-          ? null
-          : Text(
-              DateFormat(
-                'dd MMMM yyyy',
-                AppLocalizations.of(context)!.localeName,
-              ).format(task.deadline!),
-              style: myTextStyles.subhead.copyWith(
-                color: myTextStyles.subhead.color!.withOpacity(0.3),
-              ),
+          ),
+          trailing: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: SvgPicture.asset(
+              MyIcons.info,
+              color: myColors.labelTertiary, // переделать цвет
             ),
-    );
-  }
+          ),
+          title: Text(
+            widget.task.name,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: task.done
+                ? myTextStyles.body.copyWith(
+                    color: myTextStyles.subhead.color!.withOpacity(0.3),
+                    decoration: TextDecoration.lineThrough,
+                  )
+                : myTextStyles.body,
+          ),
+          subtitle: (task.deadline == null)
+              ? null
+              : Text(
+                  DateFormat(
+                    'dd MMMM yyyy',
+                    AppLocalizations.of(context)!.localeName,
+                  ).format(task.deadline!),
+                  style: myTextStyles.subhead.copyWith(
+                    color: myTextStyles.subhead.color!.withOpacity(0.3),
+                  ),
+                ),
+        );
+      });
 }
 
 class LeftShift extends StatelessWidget {
@@ -188,7 +197,7 @@ class LeftShift extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final myColors = GetIt.I<MyColors>();
+    final myColors = GetIt.I<MyColors>();
 
     final width = MediaQuery.of(context).size.width;
     final iconWidth = 18 / 360 * width;

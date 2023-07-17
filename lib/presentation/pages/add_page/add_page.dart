@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
-import 'package:todo/presentation/bloc/tasks_bloc.dart';
+import 'package:todo/presentation/bloc/tasks_bloc/tasks_bloc.dart';
 import 'package:todo/domain/models/importance.dart';
 import 'package:todo/core/utils/my_colors.dart';
 import 'package:todo/core/utils/my_icons.dart';

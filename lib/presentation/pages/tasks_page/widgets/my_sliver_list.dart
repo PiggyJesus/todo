@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/presentation/bloc/tasks_bloc.dart';
+import 'package:todo/presentation/bloc/tasks_bloc/tasks_bloc.dart';
 import 'package:todo/presentation/navigation/navigation_state.dart';
 
 import 'task_widget.dart';
