@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo/data/local/servise/local_service.dart';
@@ -6,6 +7,7 @@ import 'package:todo/data/remote/unit/remote_unit.dart';
 import 'package:todo/data/repository/repository.dart';
 import 'package:todo/domain/models/enviroment.dart';
 import 'package:todo/domain/repository/task_repository.dart';
+import 'package:todo/firebase_options.dart';
 import 'package:todo/presentation/bloc/importance_color_bloc/importance_color_bloc.dart';
 import 'package:todo/presentation/bloc/tasks_bloc/tasks_bloc.dart';
 import 'package:todo/presentation/my_app_wrapper.dart';
@@ -20,6 +22,12 @@ Future<void> main() async {
 
 Future<void> _initDependencies(Enviroment env) async {
   GetIt.I.registerSingleton<Enviroment>(env);
+  
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
   // зависимости локальной бд
   GetIt.I.registerSingleton<LocalService>(LocalServiseMock());
   GetIt.I.registerSingleton(LocalUnit(GetIt.I<LocalService>()));

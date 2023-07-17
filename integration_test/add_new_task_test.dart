@@ -10,7 +10,7 @@ void main() {
     await test_main.main();
 
     await widgetTester.pumpAndSettle();
-    await widgetTester.tap(find.byType(FloatingActionButton).first);
+    await widgetTester.tap(find.byType(FloatingActionButton).last);
     await widgetTester.pumpAndSettle();
 
     await widgetTester.enterText(find.byType(TextField).first, 'New task');
