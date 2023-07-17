@@ -68,6 +68,7 @@ Future<void> _initDependencies(Enviroment env) async {
   ));
 
   await remoteConfig.fetchAndActivate();
+  colorBloc.add(ColorUpdateEvent(remoteConfig.getString("importance_color")));
 
   remoteConfig.onConfigUpdated.listen((event) async {
     await remoteConfig.activate();
