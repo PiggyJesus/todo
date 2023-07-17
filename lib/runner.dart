@@ -17,15 +17,20 @@ import 'package:todo/data/remote/servise/remote_service.dart';
 import 'package:todo/data/remote/unit/remote_unit.dart';
 import 'package:todo/data/repository/repository.dart';
 import 'package:todo/presentation/my_app_wrapper.dart';
+import 'package:todo/presentation/navigation/my_navigator_impl.dart';
+import 'package:todo/presentation/navigation/my_navigator_repository.dart';
+import 'package:todo/presentation/navigation/route_information_parser.dart';
+import 'package:todo/presentation/navigation/router_delegate.dart';
 
 void run(Enviroment env) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initDependencies(env);
 
-  runApp(MyAppWrapper());
+  runApp(const MyAppWrapper());
 }
 
 Future<void> _initDependencies(Enviroment env) async {
+  // Тип сборки
   GetIt.I.registerSingleton<Enviroment>(env);
 
   await Firebase.initializeApp(
@@ -52,6 +57,7 @@ Future<void> _initDependencies(Enviroment env) async {
     analyticsInstance: FirebaseAnalytics.instance,
   ));
 
+  // Конфиг с цветом
   final colorBloc = ColorBloc();
   GetIt.I.registerSingleton<ColorBloc>(colorBloc);
 
@@ -69,6 +75,7 @@ Future<void> _initDependencies(Enviroment env) async {
     colorBloc.add(ColorUpdateEvent(color));
   });
 
+  // Ошибки
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
@@ -76,4 +83,12 @@ Future<void> _initDependencies(Enviroment env) async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+
+  //Навигация
+  GetIt.I.registerSingleton(MyRouteInformationParser());
+  GetIt.I.registerSingleton(MyRouterDelegate());
+
+  GetIt.I.registerSingleton<MyNavigatorRepository>(
+    MyNavigatorImpl(routerDelegate: GetIt.I<MyRouterDelegate>()),
+  );
 }

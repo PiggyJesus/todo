@@ -13,15 +13,11 @@ import 'package:todo/presentation/navigation/router_delegate.dart';
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final _myRouterDelegate = MyRouterDelegate();
-
-  final _myRouteInformationParser = MyRouteInformationParser();
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) => MaterialApp.router(
-        routerDelegate: _myRouterDelegate,
-        routeInformationParser: _myRouteInformationParser,
+        routerDelegate: GetIt.I<MyRouterDelegate>(),
+        routeInformationParser: GetIt.I<MyRouteInformationParser>(),
         builder: (context, child) {
           if (!GetIt.I.isRegistered<MyColors>()) {
             if (MediaQuery.of(context).platformBrightness == Brightness.light) {

@@ -14,16 +14,14 @@ import 'package:todo/core/utils/my_colors.dart';
 import 'package:todo/core/utils/my_icons.dart';
 import 'package:todo/core/utils/my_text_styles.dart';
 import 'package:todo/domain/models/task_model.dart';
-import 'package:todo/presentation/navigation/navigation_state.dart';
+import 'package:todo/presentation/navigation/my_navigator_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskWidget extends StatefulWidget {
   final TaskModel task;
-  final void Function(NavigationState) onTapNavigate;
 
   const TaskWidget({
     required this.task,
-    required this.onTapNavigate,
     super.key,
   });
 
@@ -52,7 +50,6 @@ class _TaskWidgetState extends State<TaskWidget> {
         secondaryBackground: RightShift(offset),
         child: MainPart(
           task: widget.task,
-          onTapNavigate: widget.onTapNavigate,
         ),
         onUpdate: (details) {
           setState(() {
@@ -76,11 +73,9 @@ class _TaskWidgetState extends State<TaskWidget> {
 }
 
 class MainPart extends StatefulWidget {
-  final void Function(NavigationState) onTapNavigate;
   final TaskModel task;
   const MainPart({
     required this.task,
-    required this.onTapNavigate,
     super.key,
   });
 
@@ -115,7 +110,7 @@ class _MainPartState extends State<MainPart> {
           tileColor: myColors.secondary,
           titleAlignment: ListTileTitleAlignment.top,
           onTap: () {
-            widget.onTapNavigate(NavigationState.editTask(task.uuid));
+            GetIt.I<MyNavigatorRepository>().navigateToEditTaskPage(task.uuid);
           },
           leading: SizedBox(
             width:

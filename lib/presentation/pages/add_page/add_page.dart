@@ -13,15 +13,13 @@ import 'package:todo/domain/models/task_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:intl/intl.dart';
-import 'package:todo/presentation/navigation/navigation_state.dart';
+import 'package:todo/presentation/navigation/my_navigator_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class AddPage extends StatefulWidget {
-  final void Function(NavigationState) onTapNavigate;
   final String taskId;
   const AddPage({
     required this.taskId,
-    required this.onTapNavigate,
     super.key,
   });
 
@@ -108,7 +106,7 @@ class _AddPageState extends State<AddPage> {
                         BlocProvider.of<TasksBloc>(context)
                             .add(TaskUpdateEvent(task));
                       }
-                      widget.onTapNavigate(NavigationState.root());
+                      GetIt.I<MyNavigatorRepository>().navigateToTasksPage();
                     }
                   },
                   child: Text(
@@ -283,7 +281,8 @@ class _AddPageState extends State<AddPage> {
                           : () {
                               BlocProvider.of<TasksBloc>(context)
                                   .add(TaskDeleteEvent(widget.taskId));
-                              widget.onTapNavigate(NavigationState.root());
+                              GetIt.I<MyNavigatorRepository>()
+                                  .navigateToTasksPage();
                             },
                       child: Row(
                         children: [

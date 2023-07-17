@@ -23,22 +23,19 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
       pages: [
         MaterialPage(
           child: TasksPage(
-            onTapNavigate: setNewRoutePath,
             enviroment: GetIt.I<Enviroment>(),
           ),
         ),
         if (state?.isNewTaskPage ?? false)
-          MaterialPage(
+          const MaterialPage(
             child: AddPage(
               taskId: '',
-              onTapNavigate: setNewRoutePath,
             ),
           ),
         if (state?.isEditTaskPage ?? false)
           MaterialPage(
             child: AddPage(
               taskId: state!.selectedTaskId!,
-              onTapNavigate: setNewRoutePath,
             ),
           ),
         if (state?.isUnknown ?? false) const MaterialPage(child: UnknownPage()),

@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo/domain/models/enviroment.dart';
 import 'package:todo/presentation/bloc/tasks_bloc/tasks_bloc.dart';
-import 'package:todo/presentation/navigation/navigation_state.dart';
+import 'package:todo/presentation/navigation/my_navigator_repository.dart';
 import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_appbar.dart';
 import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_list.dart';
 import 'package:todo/core/utils/my_colors.dart';
@@ -14,9 +14,7 @@ import 'package:todo/core/utils/my_icons.dart';
 
 class TasksPage extends StatefulWidget {
   final Enviroment enviroment;
-  final void Function(NavigationState) onTapNavigate;
   const TasksPage({
-    required this.onTapNavigate,
     required this.enviroment,
     super.key,
   });
@@ -57,9 +55,7 @@ class _TasksPageState extends State<TasksPage> {
                 ),
               ),
               // ignore: prefer_const_constructors
-              MySLiverList(
-                onTapNavigate: widget.onTapNavigate,
-              ),
+              MySLiverList(),
               // SliverToBoxAdapter(
               //   child: Container(height: 200, color: Colors.red) ,
               // )
@@ -81,7 +77,7 @@ class _TasksPageState extends State<TasksPage> {
               FloatingActionButton(
                 heroTag: "mainButton",
                 onPressed: () =>
-                    widget.onTapNavigate(NavigationState.newTask()),
+                    GetIt.I<MyNavigatorRepository>().navigateToNewTaskPage(),
                 child: SvgPicture.asset(MyIcons.add, color: myColors.white),
               ),
             ],
