@@ -6,6 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:todo/domain/models/enviroment.dart';
 import 'package:todo/domain/repository/task_repository.dart';
 import 'package:todo/firebase_options.dart';
 import 'package:todo/presentation/bloc/importance_color_bloc/importance_color_bloc.dart';
@@ -17,14 +18,16 @@ import 'package:todo/data/remote/unit/remote_unit.dart';
 import 'package:todo/data/repository/repository.dart';
 import 'package:todo/presentation/my_app_wrapper.dart';
 
-void run(String? message) async {
+void run(Enviroment env) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await _initDependencies();
+  await _initDependencies(env);
 
-  runApp(MyAppWrapper(message: message));
+  runApp(MyAppWrapper());
 }
 
-Future<void> _initDependencies() async {
+Future<void> _initDependencies(Enviroment env) async {
+  GetIt.I.registerSingleton<Enviroment>(env);
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

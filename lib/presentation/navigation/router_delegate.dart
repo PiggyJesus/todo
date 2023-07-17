@@ -1,5 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:todo/domain/models/enviroment.dart';
 import 'package:todo/presentation/navigation/navigation_state.dart';
 import 'package:todo/presentation/pages/add_page/add_page.dart';
 import 'package:todo/presentation/pages/tasks_page/tasks_page.dart';
@@ -22,6 +24,7 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
         MaterialPage(
           child: TasksPage(
             onTapNavigate: setNewRoutePath,
+            enviroment: GetIt.I<Enviroment>(),
           ),
         ),
         if (state?.isNewTaskPage ?? false)

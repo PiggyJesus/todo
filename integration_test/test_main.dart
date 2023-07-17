@@ -4,6 +4,7 @@ import 'package:todo/data/local/servise/local_service.dart';
 import 'package:todo/data/local/unit/local_unit.dart';
 import 'package:todo/data/remote/unit/remote_unit.dart';
 import 'package:todo/data/repository/repository.dart';
+import 'package:todo/domain/models/enviroment.dart';
 import 'package:todo/domain/repository/task_repository.dart';
 import 'package:todo/presentation/bloc/importance_color_bloc/importance_color_bloc.dart';
 import 'package:todo/presentation/bloc/tasks_bloc/tasks_bloc.dart';
@@ -13,11 +14,12 @@ import '../test/data/remote_unit_mock.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await _initDependencies();
-  runApp(const MyAppWrapper(message: "TEST"));
+  await _initDependencies(Enviroment.test);
+  runApp(const MyAppWrapper());
 }
 
-Future<void> _initDependencies() async {
+Future<void> _initDependencies(Enviroment env) async {
+  GetIt.I.registerSingleton<Enviroment>(env);
   // зависимости локальной бд
   GetIt.I.registerSingleton<LocalService>(LocalServiseMock());
   GetIt.I.registerSingleton(LocalUnit(GetIt.I<LocalService>()));
