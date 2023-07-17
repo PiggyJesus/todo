@@ -57,4 +57,4 @@ Future<void> _initDependencies(Enviroment env) async {
   GetIt.I.registerSingleton<MyNavigatorRepository>(
     MyNavigatorImpl(routerDelegate: GetIt.I<MyRouterDelegate>()),
   );
-}
+ }
