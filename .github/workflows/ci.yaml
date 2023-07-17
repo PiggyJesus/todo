@@ -27,4 +27,4 @@ jobs:
               run: flutter test test/unit_tests/task_repository_impl_test.dart
               
             - name: Build
-              run: flutter build apk -t lib/main_prod.dart  
+              run: flutter build apk -t lib/main_prod.dart --flavor production
