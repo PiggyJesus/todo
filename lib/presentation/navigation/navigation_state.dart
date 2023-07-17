@@ -11,7 +11,6 @@ class NavigationState {
 
   bool get isRoot => !isNewTaskPage && !isUnknown && !isEditTaskPage;
 
-
   NavigationState.unknown()
       : _unknown = true,
         selectedTaskId = null,
@@ -25,7 +24,7 @@ class NavigationState {
   NavigationState.editTask(this.selectedTaskId)
       : _unknown = false,
         _newTaskPage = false;
-        
+
   NavigationState.root()
       : selectedTaskId = null,
         _newTaskPage = false,

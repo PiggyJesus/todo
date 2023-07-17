@@ -24,7 +24,6 @@ class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {
     final myColors = GetIt.I<MyColors>();
     final myTextStyles = GetIt.I<MyTextStyles>();
 
-    
     return LayoutBuilder(builder: (context, constrains) {
       final size = constrains.maxHeight;
       final animationFactor = (size - minExtent) / (maxExtent - minExtent);
@@ -32,16 +31,16 @@ class MySliverAppbarDelegate extends SliverPersistentHeaderDelegate {
       if (ThemeMode.system == ThemeMode.light) {
         backgroundColor = myColors.primary;
       } else {
-        backgroundColor = myColors.primary.withBlue(
-            ((myColors.primary.blue - myColors.secondary.blue) *
+        backgroundColor = myColors.primary
+            .withBlue(((myColors.primary.blue - myColors.secondary.blue) *
                         animationFactor +
                     myColors.secondary.blue)
-                .toInt()).withGreen(
-            ((myColors.primary.green - myColors.secondary.green) *
+                .toInt())
+            .withGreen(((myColors.primary.green - myColors.secondary.green) *
                         animationFactor +
                     myColors.secondary.green)
-                .toInt()).withRed(
-            ((myColors.primary.red - myColors.secondary.red) *
+                .toInt())
+            .withRed(((myColors.primary.red - myColors.secondary.red) *
                         animationFactor +
                     myColors.secondary.red)
                 .toInt());

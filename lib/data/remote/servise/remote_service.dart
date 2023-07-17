@@ -32,7 +32,6 @@ class RemoteService {
   }
 
   Future<Response> post(Map<String, dynamic> data) async {
-    
     return _tryRequest(() => _getDio.post("/list/", data: data));
   }
 
@@ -45,7 +44,7 @@ class RemoteService {
   }
 
   Future<Response> patch(Map<String, dynamic> data) async {
-    return  _tryRequest<Response>(() => _getDio.patch("/list/", data: data));
+    return _tryRequest<Response>(() => _getDio.patch("/list/", data: data));
   }
 
   Future<T> _tryRequest<T>(Future<T> Function() request) async {

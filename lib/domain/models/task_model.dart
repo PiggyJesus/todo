@@ -53,7 +53,7 @@ class EpochDateTimeNullableConverter implements JsonConverter<DateTime?, int?> {
 
 class IpmortanceConverter implements JsonConverter<Importance, String> {
   const IpmortanceConverter();
-  
+
   @override
   Importance fromJson(String json) {
     switch (json) {

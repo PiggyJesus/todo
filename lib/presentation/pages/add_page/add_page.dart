@@ -72,7 +72,7 @@ class _AddPageState extends State<AddPage> {
   Widget build(BuildContext context) {
     final myColors = GetIt.I<MyColors>();
     final myTextStyles = GetIt.I<MyTextStyles>();
-    
+
     return BlocBuilder<TasksBloc, TasksState>(
       builder: (context, state) {
         if (state is! TasksLoadedState) {

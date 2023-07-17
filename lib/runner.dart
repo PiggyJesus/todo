@@ -66,7 +66,6 @@ Future<void> _initDependencies() async {
     colorBloc.add(ColorUpdateEvent(color));
   });
 
-
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
