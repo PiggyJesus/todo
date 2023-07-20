@@ -16,14 +16,14 @@ class MyAppWrapper extends StatelessWidget {
     if (env == Enviroment.test) message = "TEST";
 
     if (message == null) {
-      return MyApp();
+      return const MyApp();
     }
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Banner(
         message: message,
         location: BannerLocation.topEnd,
-        child: MyApp(),
+        child: const MyApp(),
       ),
     );
   }
