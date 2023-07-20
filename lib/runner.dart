@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -33,10 +34,6 @@ Future<void> _initDependencies(Enviroment env) async {
   // Тип сборки
   GetIt.I.registerSingleton<Enviroment>(env);
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
   // зависимости локальной бд
   GetIt.I.registerSingleton(LocalService());
   GetIt.I.registerSingleton(LocalUnit(GetIt.I<LocalService>()));
@@ -51,45 +48,59 @@ Future<void> _initDependencies(Enviroment env) async {
     remoteUnit: GetIt.I<RemoteUnit>(),
   ));
 
-  // блок на основе репозитория
-  GetIt.I.registerSingleton(TasksBloc(
-    GetIt.I<TaskRepository>(),
-    analyticsInstance: FirebaseAnalytics.instance,
-  ));
-
   // Конфиг с цветом
   final colorBloc = ColorBloc();
   GetIt.I.registerSingleton<ColorBloc>(colorBloc);
 
-  final remoteConfig = FirebaseRemoteConfig.instance;
-  await remoteConfig.setConfigSettings(RemoteConfigSettings(
-    fetchTimeout: const Duration(minutes: 1),
-    minimumFetchInterval: const Duration(hours: 1),
-  ));
+  FirebaseAnalytics? analytics;
 
-  await remoteConfig.fetchAndActivate();
-  colorBloc.add(ColorUpdateEvent(remoteConfig.getString("importance_color")));
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  remoteConfig.onConfigUpdated.listen((event) async {
-    await remoteConfig.activate();
-    final color = remoteConfig.getString("importance_color");
-    colorBloc.add(ColorUpdateEvent(color));
-  });
+  try {
+    final result = await InternetAddress.lookup('example.com');
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      analytics = FirebaseAnalytics.instance;
 
-  // Ошибки
-  FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+      final remoteConfig = FirebaseRemoteConfig.instance;
+      await remoteConfig.setConfigSettings(RemoteConfigSettings(
+        fetchTimeout: const Duration(minutes: 1),
+        minimumFetchInterval: const Duration(hours: 1),
+      ));
+
+      await remoteConfig.fetchAndActivate();
+      colorBloc
+          .add(ColorUpdateEvent(remoteConfig.getString("importance_color")));
+
+      remoteConfig.onConfigUpdated.listen((event) async {
+        await remoteConfig.activate();
+        final color = remoteConfig.getString("importance_color");
+        colorBloc.add(ColorUpdateEvent(color));
+      });
+
+      // Ошибки
+      FlutterError.onError = (errorDetails) {
+        FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+      };
+      PlatformDispatcher.instance.onError = (error, stack) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true;
+      };
+    }
+  } on SocketException catch (_) {}
 
   //Навигация
   GetIt.I.registerSingleton(MyRouteInformationParser());
-  GetIt.I.registerSingleton(MyRouterDelegate());
+  GetIt.I.registerSingleton(MyRouterDelegate(analytics: analytics));
 
   GetIt.I.registerSingleton<MyNavigatorRepository>(
     MyNavigatorImpl(routerDelegate: GetIt.I<MyRouterDelegate>()),
   );
+
+  // блок на основе репозитория
+  GetIt.I.registerSingleton(TasksBloc(
+    GetIt.I<TaskRepository>(),
+    analyticsInstance: analytics,
+  ));
 }

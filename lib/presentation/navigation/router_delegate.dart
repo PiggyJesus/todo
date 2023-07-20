@@ -9,10 +9,13 @@ import 'package:todo/presentation/pages/unknown_page/unknown_page.dart';
 
 class MyRouterDelegate extends RouterDelegate<NavigationState>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<NavigationState> {
+  final FirebaseAnalytics? analytics;
+
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
-  MyRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+  MyRouterDelegate({this.analytics})
+      : navigatorKey = GlobalKey<NavigatorState>();
 
   NavigationState? state;
 
@@ -55,10 +58,12 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
 
   @override
   Future<void> setNewRoutePath(NavigationState configuration) async {
-    if (configuration.isRoot) {
-      FirebaseAnalytics.instance.logEvent(name: "go_to_main_page");
-    } else if (configuration.isEditTaskPage || configuration.isNewTaskPage) {
-      FirebaseAnalytics.instance.logEvent(name: "go_to_add_page");
+    if (analytics != null) {
+      if (configuration.isRoot) {
+        FirebaseAnalytics.instance.logEvent(name: "go_to_main_page");
+      } else if (configuration.isEditTaskPage || configuration.isNewTaskPage) {
+        FirebaseAnalytics.instance.logEvent(name: "go_to_add_page");
+      }
     }
     state = configuration;
     notifyListeners();
