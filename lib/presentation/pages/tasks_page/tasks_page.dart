@@ -1,0 +1,89 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
+import 'package:todo/domain/models/enviroment.dart';
+import 'package:todo/presentation/bloc/tasks_bloc/tasks_bloc.dart';
+import 'package:todo/presentation/navigation/my_navigator_repository.dart';
+import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_appbar.dart';
+import 'package:todo/presentation/pages/tasks_page/widgets/my_sliver_list.dart';
+import 'package:todo/core/utils/my_colors.dart';
+import 'package:todo/core/utils/my_icons.dart';
+
+class TasksPage extends StatefulWidget {
+  final Enviroment enviroment;
+  const TasksPage({
+    required this.enviroment,
+    super.key,
+  });
+
+  @override
+  State<TasksPage> createState() => _TasksPageState();
+}
+
+class _TasksPageState extends State<TasksPage> {
+  late final MyColors myColors;
+
+  @override
+  void initState() {
+    super.initState();
+    myColors = GetIt.I<MyColors>();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TasksBloc, TasksState>(
+      builder: (context, state) {
+        if (state is! TasksLoadedState) {
+          return Scaffold(
+            backgroundColor: myColors.primary,
+            body: const Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        return Scaffold(
+          backgroundColor: myColors.primary,
+          body: CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                pinned: true,
+                floating: true,
+                delegate: MySliverAppbarDelegate(
+                  context: context,
+                ),
+              ),
+              // ignore: prefer_const_constructors
+              MySLiverList(),
+              // SliverToBoxAdapter(
+              //   child: Container(height: 200, color: Colors.red) ,
+              // )
+            ],
+          ),
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (widget.enviroment != Enviroment.prod)
+                FloatingActionButton(
+                  heroTag: "errorButton",
+                  backgroundColor: myColors.red,
+                  onPressed: () {
+                    throw Exception("test exception");
+                  },
+                  child: Icon(Icons.warning, color: myColors.white),
+                ),
+              const SizedBox(width: 10),
+              FloatingActionButton(
+                heroTag: "mainButton",
+                onPressed: () =>
+                    GetIt.I<MyNavigatorRepository>().navigateToNewTaskPage(),
+                child: SvgPicture.asset(MyIcons.add, color: myColors.white),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
