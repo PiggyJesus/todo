@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  awesome_extensions:
+    dependency: "direct main"
+    description:
+      name: awesome_extensions
+      sha256: "6b9c6a5f70d17959ace71d649d3b816b13b73267196035d431ff17e65a228608"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.9"
   bloc:
     dependency: "direct main"
     description:

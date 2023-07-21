@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -106,17 +107,17 @@ class _MainPartState extends State<MainPart> {
           }
         }
 
-        return ListTile(
-          tileColor: myColors.secondary,
-          titleAlignment: ListTileTitleAlignment.top,
-          onTap: () {
-            GetIt.I<MyNavigatorRepository>().navigateToEditTaskPage(task.uuid);
-          },
-          leading: SizedBox(
-            width:
-                (task.done || task.importance == Importance.common) ? 50 : 60,
+        return Container(
+          color: myColors.secondary,
+          child: GestureDetector(
+            onTap: () {
+              GetIt.I<MyNavigatorRepository>()
+                  .navigateToEditTaskPage(task.uuid);
+            },
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                10.widthBox,
                 Checkbox(
                   splashRadius: 2,
                   value: task.done,
@@ -140,6 +141,8 @@ class _MainPartState extends State<MainPart> {
                     });
                   },
                 ),
+                if (!task.done && task.importance != Importance.common)
+                  10.widthBox,
                 if (!task.done && task.importance == Importance.high)
                   SvgPicture.asset(
                     MyIcons.doubleExcl,
@@ -150,38 +153,41 @@ class _MainPartState extends State<MainPart> {
                     MyIcons.downArrow,
                     color: myColors.grey,
                   ),
+                10.widthBox,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.task.name,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: task.done
+                          ? myTextStyles.body.copyWith(
+                              color: myTextStyles.subhead.color!.withOpacity(0.3),
+                              decoration: TextDecoration.lineThrough,
+                            )
+                          : myTextStyles.body,
+                    ),
+                    if (task.deadline != null)
+                      Text(
+                        DateFormat(
+                          'dd MMMM yyyy',
+                          AppLocalizations.of(context)!.localeName,
+                        ).format(task.deadline!),
+                        style: myTextStyles.subhead.copyWith(
+                          color: myTextStyles.subhead.color!.withOpacity(0.3),
+                        ),
+                      ),
+                  ],
+                ).expanded(),
+                SvgPicture.asset(
+                  MyIcons.info,
+                  color: myColors.labelTertiary, // переделать цвет
+                ).paddingSymmetric(horizontal: 20),
               ],
             ),
           ),
-          trailing: Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: SvgPicture.asset(
-              MyIcons.info,
-              color: myColors.labelTertiary, // переделать цвет
-            ),
-          ),
-          title: Text(
-            widget.task.name,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: task.done
-                ? myTextStyles.body.copyWith(
-                    color: myTextStyles.subhead.color!.withOpacity(0.3),
-                    decoration: TextDecoration.lineThrough,
-                  )
-                : myTextStyles.body,
-          ),
-          subtitle: (task.deadline == null)
-              ? null
-              : Text(
-                  DateFormat(
-                    'dd MMMM yyyy',
-                    AppLocalizations.of(context)!.localeName,
-                  ).format(task.deadline!),
-                  style: myTextStyles.subhead.copyWith(
-                    color: myTextStyles.subhead.color!.withOpacity(0.3),
-                  ),
-                ),
         );
       });
 }

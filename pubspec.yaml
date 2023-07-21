@@ -43,6 +43,7 @@ dependencies:
   json_annotation: ^4.8.1
   shared_preferences: ^2.2.0
   get_it: ^7.6.0
+  awesome_extensions: ^2.0.8
 
   mockito: ^5.4.2
   firebase_core: ^2.15.0
