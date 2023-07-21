@@ -164,7 +164,8 @@ class _MainPartState extends State<MainPart> {
                       overflow: TextOverflow.ellipsis,
                       style: task.done
                           ? myTextStyles.body.copyWith(
-                              color: myTextStyles.subhead.color!.withOpacity(0.3),
+                              color:
+                                  myTextStyles.subhead.color!.withOpacity(0.3),
                               decoration: TextDecoration.lineThrough,
                             )
                           : myTextStyles.body,
