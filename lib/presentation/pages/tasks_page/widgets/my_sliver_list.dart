@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,24 +22,8 @@ class MySLiverList extends StatelessWidget {
       data = data.where((element) => !element.done).toList();
     }
 
-    if (columnsCount == 0) {
-      return SliverList(
-        delegate: SliverChildListDelegate(
-          List.generate(
-            data.length,
-            (i) => SizedBox(
-              height: size.width / 4,
-              child: TaskWidget(
-                task: data[i],
-              ).paddingAll(8),
-            ),
-          ),
-        ),
-      );
-    }
-
     return SliverGrid.count(
-      crossAxisCount: columnsCount,
+      crossAxisCount: max(1, columnsCount),
       childAspectRatio: 4,
       children: List.generate(
         data.length,
